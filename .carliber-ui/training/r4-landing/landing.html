@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生存不孤单 · 模组服招新</title>
+<style>
+  :root { --night:#0d1220; --dawn:#2a3448; --dusk:#1a1626; --torch:#f4a940; --torch-d:#8a5a1a;
+          --ink:#e8e6e0; --dim:#9a98a0; --ok:#7fd47f; --err:#c64545; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--night); color:var(--ink);
+         font:16px/1.8 "PingFang SC","Microsoft YaHei",sans-serif; }
+  .wrap { max-width:880px; margin:0 auto; padding:0 24px; }
+  section { padding:clamp(64px,10vh,120px) 0; }
+
+  /* Hero: 像素夜空+火把光晕(光照模拟), 视差随滚动 */
+  .hero { min-height:92vh; display:flex; flex-direction:column; justify-content:center;
+          position:relative; overflow:hidden;
+          background:linear-gradient(180deg,#070a14 0%,#0d1220 55%,#141a2e 100%); }
+  .stars { position:absolute; inset:0; }
+  .stars i { position:absolute; width:3px; height:3px; background:#cfd6e4; }
+  .glow { position:absolute; width:min(520px,70vw); height:min(520px,70vw); right:-6%; bottom:-14%;
+          background:radial-gradient(circle,rgba(244,169,64,.28) 0%,rgba(244,169,64,.10) 42%,transparent 68%); }
+  .hero-inner { position:relative; }
+  .kick { color:var(--torch); font-size:14px; letter-spacing:0; margin-bottom:16px; }
+  h1 { font-size:clamp(34px,6vw,56px); line-height:1.45; margin-bottom:20px; }
+  h1 b { color:var(--torch); font-weight:400; }
+  .lead { font-size:19px; color:var(--dim); max-width:32em; margin-bottom:32px; }
+  .cta-row { display:flex; gap:14px; flex-wrap:wrap; }
+  .btn { display:inline-block; padding:12px 26px; font-size:15px; text-decoration:none;
+         border:3px solid #030303; box-shadow:inset 0 3px 0 #aaaaaa; color:var(--ink);
+         background:linear-gradient(#6b6b6b,#707070 40%,#565656); }
+  .btn:hover { background:linear-gradient(#bec7ff,#808ac1 40%,#5c669d); color:#ffffa0; }
+  .btn-main { background:linear-gradient(#4d7a4d,#3d633d 40%,#2d4a2d); color:#eaffea; }
+  .btn-main:hover { background:linear-gradient(#5d9a5d,#4a7a4a 40%,#355635); color:#fff; }
+  .hint { position:absolute; bottom:22px; left:50%; transform:translateX(-50%);
+          color:var(--dim); font-size:13px; }
+
+  /* 通用出场: IO 加 .in */
+  .rv { opacity:0; transform:translateY(28px); transition:opacity .6s ease-out,transform .6s ease-out; }
+  .rv.in { opacity:1; transform:none; }
+
+  /* 共鸣段 */
+  .empathy p { font-size:18px; max-width:30em; }
+  .empathy .big { font-size:clamp(22px,3.4vw,30px); color:var(--ink); line-height:1.6; margin-bottom:18px; }
+  .empathy .big b { color:var(--torch); font-weight:400; }
+
+  /* 一天的生活: 滚动驱动时间轴 */
+  .day { position:relative; }
+  .tl { position:relative; padding-left:30px; }
+  .tl::before { content:""; position:absolute; left:8px; top:0; bottom:0; width:3px; background:#2e3450; }
+  .tl .prog { position:absolute; left:8px; top:0; width:3px; background:var(--torch); height:0; }
+  .scene { position:relative; margin-bottom:clamp(48px,8vh,84px); }
+  .scene .dot { position:absolute; left:-30px; top:8px; width:15px; height:15px;
+                background:#2e3450; border:3px solid var(--night); }
+  .scene.lit .dot { background:var(--torch); }
+  .scene .time { font-family:Consolas,monospace; color:var(--torch); font-size:14px; }
+  .scene h3 { font-size:19px; margin:4px 0 8px; }
+  .scene p { color:var(--dim); max-width:30em; font-size:15px; }
+
+  /* 数字 */
+  .nums { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; }
+  .num { background:#151b2c; border:3px solid #2e3450; padding:22px 18px; text-align:center; }
+  .num .v { font-size:clamp(26px,3.6vw,34px); font-family:Consolas,monospace; color:var(--ok); }
+  .num .k { font-size:13.5px; color:var(--dim); margin-top:4px; }
+  .foot-note { font-size:12.5px; color:#6a6a74; margin-top:14px; }
+
+  /* 玩家声音 */
+  .voices { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
+  .voice { background:#151b2c; border:3px solid #2e3450; padding:20px; }
+  .voice q { quotes:none; display:block; font-size:14.5px; margin-bottom:12px; }
+  .voice .who { font-size:13px; color:var(--torch); }
+
+  /* CTA */
+  .cta { text-align:center; }
+  .cta h2 { font-size:clamp(26px,4vw,36px); margin-bottom:16px; }
+  .cta p { color:var(--dim); margin-bottom:28px; }
+
+  footer { padding:32px 0 48px; font-size:13px; color:#6a6a74; text-align:center; }
+  footer a { color:#9fb8d8; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior:auto; }
+    .rv { opacity:1; transform:none; transition:none; }
+    .tl .prog { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero" id="hero">
+  <div class="stars" id="stars" aria-hidden="true"></div>
+  <div class="glow" id="glow" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <div class="kick">模组服 · 1.7.10 · 长期生存</div>
+    <h1>单机生存第 200 天,<br>你造的 Everything Compressor <b>还没人看过</b>。</h1>
+    <p class="lead">一台开了四年的模组服:红石机房、集市街、末地前哨,和一群记得你生日的陌生人。</p>
+    <div class="cta-row">
+      <a class="btn btn-main" href="file:///Users/tongxl/.agents/skills/carliber-ui/.carliber-ui/training/r1-form/form.html">申请白名单</a>
+      <a class="btn" href="#day">先看看我们的生活</a>
+    </div>
+  </div>
+  <div class="hint">↓ 往下滚,是一天</div>
+</header>
+
+<section class="empathy wrap rv">
+  <p class="big">单机的世界里,熔炉烧了整晚,<br>早上开档,<b>只有你一个人知道它烧了什么</b>。</p>
+  <p>红石机器没人踩机关,集市摊位没有顾客,末地传送门开了又关。这不是玩法问题——是缺一群人。</p>
+</section>
+
+<section class="day wrap" id="day">
+  <div class="wrap">
+    <h2 style="font-size:clamp(24px,3.6vw,32px);margin-bottom:32px;">服务器的一天 <small style="font-size:14px;color:var(--dim)">滚动看时间流转</small></h2>
+  </div>
+  <div class="tl" id="tl">
+    <div class="prog" id="prog"></div>
+    <div class="scene rv"><div class="dot"></div><span class="time">06:30</span>
+      <h3>出生点的篝火刚熄</h3><p>早班玩家挂完机下线,留言板上写着"矿道口有洞,已垫"。新一天的脚印从这里开始叠。</p></div>
+    <div class="scene rv"><div class="dot"></div><span class="time">12:10</span>
+      <h3>集市街开市</h3><p>十七个摊位,附魔书换绿宝石,有人在世界频道喊"收实体炮零件"。讨价还价是日常。</p></div>
+    <div class="scene rv"><div class="dot"></div><span class="time">19:45</span>
+      <h3>末地远征集合</h3><p>六个人,三头驮卒,一个末影箱。折跃门前的合照每次都不一样,黑名单里没有一个人。</p></div>
+    <div class="scene rv"><div class="dot"></div><span class="time">22:30</span>
+      <h3>篝火时间</h3><p>不建房子,就坐着。聊现实,聊模组,聊"下个版本要不要升"。四年了,篝火没灭过。</p></div>
+  </div>
+</section>
+
+<section class="wrap rv">
+  <div class="nums">
+    <div class="num"><div class="v">4 年</div><div class="k">稳定运行,零回档</div></div>
+    <div class="num"><div class="v">20/20</div><div class="k">周末满员</div></div>
+    <div class="num"><div class="v">118 个</div><div class="k">模组,全兼容</div></div>
+    <div class="num"><div class="v">9 人</div><div class="k">管理组,真人回复</div></div>
+  </div>
+  <p class="foot-note">以上为演示快照数据,非实时。</p>
+</section>
+
+<section class="wrap rv">
+  <h2 style="font-size:clamp(24px,3.6vw,32px);margin-bottom:22px;">住在这里的人说</h2>
+  <div class="voices">
+    <div class="voice"><q>我离开半年,回来发现我的房子有人帮我扫了怪,箱子一样没少。</q><div class="who">— miner_2026 · 矿工</div></div>
+    <div class="voice"><q>第一次有人在我造的红石泵前面站了十分钟,就为了看它怎么动的。</q><div class="who">— redstone_k · 工程师</div></div>
+    <div class="voice"><q>农场的南瓜,一半是我种的,一半是别人收完帮我补种的。</q><div class="who">— farmer_wang · 农夫</div></div>
+  </div>
+</section>
+
+<section class="cta wrap rv">
+  <h2>第 201 天,从你的申请开始</h2>
+  <p>白名单人工审核,24 小时内回复。进来先逛集市,别急着挖矿。</p>
+  <a class="btn btn-main" href="file:///Users/tongxl/.agents/skills/carliber-ui/.carliber-ui/training/r1-form/form.html">申请白名单</a>
+</section>
+
+<footer class="wrap">演示页面 · 人物与引述为演示内容 · <a href="https://github.com/Carliber/carliber-ui">carliber-ui</a> R4</footer>
+
+<script>
+// 星空(静态像素点, JS 生成省手写)
+const stars = document.getElementById('stars');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('i');
+  s.style.left = Math.random() * 100 + '%';
+  s.style.top = Math.random() * 60 + '%';
+  s.style.opacity = (0.25 + Math.random() * 0.6).toFixed(2);
+  stars.appendChild(s);
+}
+// 出场动画
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: 0.18 });
+document.querySelectorAll('.rv').forEach(x => io.observe(x));
+// 滚动驱动: 时间轴进度 + 场景点亮
+const tl = document.getElementById('tl'), prog = document.getElementById('prog');
+const scenes = [...document.querySelectorAll('.scene')];
+function onScroll() {
+  const r = tl.getBoundingClientRect();
+  const p = Math.min(1, Math.max(0, (innerHeight * 0.6 - r.top) / r.height));
+  prog.style.height = (p * 100) + '%';
+  scenes.forEach(s => {
+    const sr = s.getBoundingClientRect();
+    s.classList.toggle('lit', sr.top < innerHeight * 0.6);
+  });
+  // hero 视差: 光晕随滚动微移
+  const hy = scrollY;
+  document.getElementById('glow').style.transform = `translateY(${hy * 0.12}px)`;
+}
+addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+</body>
+</html>

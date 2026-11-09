@@ -1,0 +1,211 @@
+[
+  {
+    "file": "motion-probe-滚动叙事",
+    "state": null,
+    "size": "1280x800",
+    "zoom": 1,
+    "group": "滚动叙事",
+    "motion": {
+      "load": {
+        "elements": 1,
+        "loops": 0,
+        "maxMove": 27,
+        "maxSize": 0,
+        "maxOpacity": 0.95,
+        "top": [
+          {
+            "el": "section.empathy.wrap",
+            "move": 27,
+            "size": 0,
+            "opacity": 0.95,
+            "loop": false,
+            "sources": [
+              "transition:transform",
+              "transition:opacity"
+            ]
+          }
+        ]
+      },
+      "steps": {
+        "elements": 8,
+        "loops": 0,
+        "maxMove": 169,
+        "maxSize": 9.626,
+        "maxOpacity": 1,
+        "top": [
+          {
+            "el": "div#prog.prog",
+            "move": 0,
+            "size": 9.626,
+            "opacity": 0,
+            "loop": false,
+            "sources": [
+              "js:style"
+            ]
+          },
+          {
+            "el": "div#glow.glow",
+            "move": 169,
+            "size": 0,
+            "opacity": 0,
+            "loop": false,
+            "sources": [
+              "js:style"
+            ]
+          },
+          {
+            "el": "div.scene.rv",
+            "move": 28,
+            "size": 0,
+            "opacity": 1,
+            "loop": false,
+            "sources": [
+              "transition:transform",
+              "transition:opacity"
+            ]
+          },
+          {
+            "el": "div.scene.rv",
+            "move": 28,
+            "size": 0,
+            "opacity": 1,
+            "loop": false,
+            "sources": [
+              "transition:transform",
+              "transition:opacity"
+            ]
+          },
+          {
+            "el": "div.scene.rv",
+            "move": 28,
+            "size": 0,
+            "opacity": 1,
+            "loop": false,
+            "sources": [
+              "transition:transform",
+              "transition:opacity"
+            ]
+          },
+          {
+            "el": "div.scene.rv",
+            "move": 28,
+            "size": 0,
+            "opacity": 1,
+            "loop": false,
+            "sources": [
+              "transition:transform",
+              "transition:opacity"
+            ]
+          },
+          {
+            "el": "section.wrap.rv",
+            "move": 28,
+            "size": 0,
+            "opacity": 1,
+            "loop": false,
+            "sources": [
+              "transition:transform",
+              "transition:opacity"
+            ]
+          },
+          {
+            "el": "section.wrap.rv",
+            "move": 28,
+            "size": 0,
+            "opacity": 1,
+            "loop": false,
+            "sources": [
+              "transition:transform",
+              "transition:opacity"
+            ]
+          }
+        ]
+      },
+      "hero": {
+        "elements": 2,
+        "loops": 0,
+        "maxMove": 1040,
+        "maxSize": 1,
+        "maxOpacity": 0,
+        "top": [
+          {
+            "el": "div#prog.prog",
+            "move": 956,
+            "size": 1,
+            "opacity": 0,
+            "loop": false,
+            "sources": [
+              "js:style"
+            ]
+          },
+          {
+            "el": "div#glow.glow",
+            "move": 1040,
+            "size": 0,
+            "opacity": 0,
+            "loop": false,
+            "sources": [
+              "js:style"
+            ]
+          }
+        ],
+        "layers": 2
+      },
+      "scroll": {
+        "elements": 2,
+        "loops": 0,
+        "maxMove": 46,
+        "maxSize": 0,
+        "maxOpacity": 0.96,
+        "top": [
+          {
+            "el": "section.cta.wrap",
+            "move": 27,
+            "size": 0,
+            "opacity": 0.96,
+            "loop": false,
+            "sources": [
+              "transition:transform",
+              "transition:opacity"
+            ]
+          },
+          {
+            "el": "div#glow.glow",
+            "move": 46,
+            "size": 0,
+            "opacity": 0,
+            "loop": false,
+            "sources": [
+              "js:style"
+            ]
+          }
+        ],
+        "scrollable": true
+      }
+    },
+    "issues": [
+      "第 1 步「click #day」：中心点被 p.big:nth-of-type(1) > b 挡住，动作仍照常执行"
+    ]
+  },
+  {
+    "file": "page-滚动叙事.png",
+    "state": null,
+    "size": "1280x800",
+    "zoom": 1,
+    "group": "滚动叙事",
+    "animationWaitMs": 760,
+    "issues": [
+      "第 1 步「click #day」：中心点被 p.big:nth-of-type(1) > b 挡住，动作仍照常执行"
+    ],
+    "lint": [
+      {
+        "rule": "stuck",
+        "label": "首屏有内容停在透明状态（出场动画没触发？）",
+        "count": 1,
+        "examples": [
+          "h2「第 201 天,从你的申请开始」"
+        ]
+      }
+    ]
+  }
+]
