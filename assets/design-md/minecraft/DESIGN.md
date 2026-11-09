@@ -103,6 +103,25 @@ overflow: "renderScaledText(GL 横向缩放)兜底,不换行不省略"
 
 API 层为通识级描述,真翻译前以对应版本源码/yarn 映射核验(mc1710 的 javap 纪律同理)。翻译增量见 [translate.md](translate.md)(1.7.10)、[translate-1.12.md](translate-1.12.md)、[translate-1.20.md](translate-1.20.md)。
 
+## 表单控件规格(R1 实战沉淀)
+
+原版只有按钮/槽位/tooltip 的现成材质,**输入框/勾选框需按同语言自绘**,规格如下(全部实测):
+
+```yaml
+# 输入框 = GuiTextField(黑底已有规格): 默认边 #a0a0a0 / 聚焦 #fff / 错误 #ffa8a8
+# 勾选框: 自绘 18px 方块, 默认黑底+#a0a0a0 边, 选中绿底 #7fd47f + 深绿勾 #0f3d0f, 聚焦白边
+# 单选按钮组: widgets 按钮三态复用, 选中态 = 悬停蓝紫渐变 + 黄字
+
+# 浅底文本色谱(#c6c6c6 面板上, 黑底语境色不可直接用):
+text-on-panel:    "#404040"       # 正文/数字
+muted-on-panel:   "#373737"       # 次要说明
+error-on-panel:   "#8f2f24"       # 错误文案(#c64545 太亮, 灰底 3.4:1)
+link-on-panel:    "#0a5bb5"       # 链接(#1190FF 是黑底语境色, 灰底仅 1.90:1 禁用)
+success-deep:     "#0f3d0f"       # 成功勾描边
+```
+
+规则:游戏内语境色(#1190FF/#ffffa0 等)只服务于黑底/深底;放到浅灰面板前,先验对比度,不可用时按色相取深档并在此表登记。
+
 ## 证据
 
 - `~/.agents/skills/mc1710/SKILL.md` §二(GUI 绘制机制,全部源码实证)
