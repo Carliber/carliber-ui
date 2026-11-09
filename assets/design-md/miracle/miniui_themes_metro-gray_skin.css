@@ -1,0 +1,376 @@
+.mini-toolbar {
+	border-color: #ddd;
+}
+
+.separator {
+	border-color: #ddd;
+}
+
+.mini-textbox-border {
+	border-color: #ddd;
+}
+
+.mini-textbox-focus .mini-textbox-border {
+	border-color: #1190ff;
+}
+
+body .mini-error .mini-textbox-border, body .mini-error .mini-buttonedit-border, body .mini-error .mini-textboxlist-border
+	{
+	border-color: #ffa8a8;
+}
+
+.mini-buttonedit-border {
+	border-color: #ddd;
+}
+
+.mini-buttonedit-focus .mini-buttonedit-border {
+	border-color: #1190ff;
+}
+
+.mini-buttonedit-button {
+	border-color: #ddd;
+}
+
+.mini-buttonedit-button-hover, .mini-buttonedit-hover .mini-buttonedit-trigger {
+	background: #f2f2f2;
+	border-color: #ddd;
+}
+
+.mini-buttonedit-button-pressed, .mini-buttonedit-popup .mini-buttonedit-trigger {
+	background: #f2f2f2;
+	border-color: #ddd;
+}
+
+.mini-textboxlist-border {
+	border-color: #ddd;
+}
+
+.mini-textboxlist-focus .mini-textboxlist-border {
+	border-color: #1190ff;
+}
+
+.mini-panel-border {
+	border-color: #ddd;
+}
+
+.mini-panel-header {
+	border-color: #ddd;
+}
+
+.mini-panel-toolbar, .mini-panel-footer {
+	border-color: #ddd;
+}
+
+.mini-window .mini-panel-header {
+	background: #506077;
+}
+
+.mini-window .mini-panel-footer {
+	background: #f2f2f2;
+}
+
+.mini-outlookbar-border {
+	border-color: #ddd;
+}
+
+.mini-outlookbar .mini-outlookbar-groupHeader {
+	background: #f2f2f2;
+	border-color: #ddd;
+}
+
+.mini-outlookbar .mini-outlookbar-hover {
+	background: #f2f2f2;
+}
+
+.mini-outlookbar-expand .mini-outlookbar-groupHeader {
+	background: #f2f2f2;
+}
+
+.mini-outlookbar .mini-outlookbar-groupTitle {
+	font-weight: normal;
+}
+
+.mini-outlookbar .mini-outlookbar-group {
+	border-color: #ddd;
+}
+
+.mini-outlookbar .mini-outlookbar-groupBody {
+	border-color: #ddd;
+}
+
+.mini-outlookbar-view2 .mini-outlookbar-groupHeader {
+	border-color: #ddd;
+}
+
+.mini-outlookbar-view3 .mini-outlookbar-group {
+	border-color: #ddd;
+}
+
+.mini-splitter-border {
+	border-color: #ddd;
+}
+
+.mini-splitter .mini-splitter-pane1 {
+	border-color: #ddd;
+}
+
+.mini-splitter .mini-splitter-pane2 {
+	border-color: #ddd;
+}
+
+.mini-layout-border {
+	border-color: #ddd;
+}
+
+.mini-layout-region {
+	border-color: #ddd;
+}
+
+.mini-layout-region-header {
+	background: #bbb;
+	border-color: #ddd;
+}
+
+.mini-layout-proxy {
+	border-color: #ddd;
+}
+
+.mini-layout-proxy-hover {
+	background: #f2f2f2;
+}
+
+.mini-layout-region-icon {
+	margin-top: 6px;
+}
+
+.mini-menu-border {
+	border-color: #ddd;
+}
+
+.mini-menuitem-hover, .mini-menu-popup {
+	border-color: #ddd;
+	background: #f2f2f2;
+}
+
+.mini-menuitem-selected {
+	border-color: #ddd;
+}
+
+.mini-separator {
+	border-color: #ddd;
+}
+
+.mini-grid-border {
+	border-color: #ddd;
+}
+
+.mini-grid-filterCell {
+	border-color: #ddd;
+}
+
+.mini-grid-cell-inner, .mini-grid-headerCell-inner {
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.mini-grid-headerCell, .mini-grid-topRightCell {
+	background: #E9E9E9;
+	border-color: #ddd;
+}
+
+.mini-grid-cell {
+	border-color: transparent;
+}
+
+.mini-grid-footer, .mini-grid-pager {
+	border-color: #ddd;
+	background: white;
+}
+
+.mini-grid-row-alt {
+	background-color: #F7F7F7;
+}
+
+html body .mini-grid-row-hover {
+	background: #ecedef;
+}
+
+html body .mini-grid-row-selected {
+	color: #1190FF;
+	background: #E7F4FF;
+}
+
+html body .mini-grid .mini-grid-cell-selected {
+	background: #f2f2f2;
+}
+
+/* tree
+==========================================*/
+.mini-tree-node-hover {
+	background: #f2f2f2;
+	border-color: #ddd;
+}
+
+.mini-tree-selectedNode {
+	color: #1190FF;
+	background: #E7F4FF;
+}
+
+/* .mini-listbox td { */
+/* 	border-bottom-style: solid; */
+/* } */
+.mini-listbox-header {
+	border-color: #ddd;
+}
+
+.mini-listbox-header td {
+	border-color: #ddd;
+}
+
+.mini-listbox-item td {
+	border-color: #ddd;
+}
+
+.mini-listbox-item-hover td {
+	background: #f2f2f2;
+	border-color: #ddd;
+}
+
+.mini-listbox-item-selected td {
+	color: #1190FF;
+	background: #E7F4FF;
+	border-color: #ddd;
+}
+
+.mini-tabs-scrollCt {
+	border-color: #ddd;
+	background-color: #f2f2f2;
+}
+
+.mini-tabs-leftButton, .mini-tabs-rightButton, .mini-tabs-tabmenu {
+	border-color: #ddd;
+}
+
+a:hover.mini-tabs-leftButton, a:hover.mini-tabs-rightButton, a:hover.mini-tabs-tabmenu {
+	border-color: #ddd;
+	background-color: #f2f2f2;
+}
+
+.mini-tabs-bodys {
+	border-color: #ddd;
+}
+
+.mini-tabs-space {
+	border-color: #ddd;
+}
+
+.mini-tabs-space2 {
+	border-color: #ddd;
+}
+
+.mini-tab-hover {
+	color: #1190FF;
+}
+
+.mini-tab-active {
+	color: #1190FF;
+}
+
+.mini-tab-active:before {
+	background: #1190FF;
+}
+
+.mini-tabs-hideOverflow {
+	background-color: #f2f2f2;
+}
+
+.mini-calendar-header {
+	border-color: #ddd;
+}
+
+.mini-calendar-footer {
+	border-color: #ddd;
+	background: #fafafa;
+}
+
+.mini-calendar-tadayButton, .mini-calendar-clearButton, .mini-calendar-okButton, .mini-calendar-cancelButton {
+	border-color: #ddd;
+}
+
+.mini-calendar-tadayButton:hover, .mini-calendar-clearButton:hover, .mini-calendar-okButton:hover,
+	.mini-calendar-cancelButton:hover {
+	background: #f2f2f2;
+}
+
+.mini-calendar-daysheader td {
+	border-color: #ddd;
+}
+
+.mini-calendar-menu {
+	border-color: #ddd;
+}
+
+.mini-calendar .mini-calendar-selected, .mini-calendar-menu-selected, a:hover.mini-calendar-menu-month, a:hover.mini-calendar-menu-year
+	{
+	color: #1190FF;
+	background: #E7F4FF;
+	border-color: #ddd;
+}
+
+.mini-buttonedit-icon, .mini-buttonedit-close, .mini-tab-close, .mini-tabs-leftButton, .mini-tabs-rightButton,
+	.mini-tabs-tabmenu, .mini-buttonedit-up span, .mini-buttonedit-down span, .mini-checkbox-check, .mini-grid-sortIcon,
+	.mini-grid-ecIcon, .mini-grid-checkbox, .mini-grid-radio, .mini-pager .mini-iconfont, .mini-tree-checkbox, .mini-tree .mini-tree-icon,
+	.mini-tree-radio, .mini-menu-topArrow, .mini-menu-bottomArrow, .mini-menuitem-allow, .mini-calendar-yearPrev,
+	.mini-calendar-yearNext, .mini-calendar-monthPrev, .mini-calendar-monthNext, .mini-calendar-menu-prevYear,
+	.mini-calendar-menu-nextYear, .mini-errorIcon, .mini-button-menu, .mini-resizer-trigger {
+	color: #666;
+}
+
+/* 这几个可能单独调整, 独立出来 */
+.mini-list-icon, .mini-checkbox-icon, .mini-tree .mini-tree-icon {
+	color: #666;
+}
+
+.mini-grid-row-selected .mini-grid-radio, .mini-grid-row-selected .mini-grid-checkbox, .mini-grid-row-selected .mini-tree-icon,
+	.mini-tree-selectedNode .mini-tree-icon {
+	color: #1190FF;
+	background: #E7F4FF;
+}
+
+.mini-checkbox-checked .mini-checkbox-icon, .mini-checkboxlist-item-selected .mini-list-icon,
+	.mini-radiobuttonlist-item-selected .mini-list-icon {
+	color: #1190FF;
+}
+
+/* 禁止部分彩色按钮 */
+.mini-button-info, .mini-button-warning {
+	color: #333 !important;
+	background-color: white !important;
+	border-color: #A9ACB5 !important;
+}
+
+/* miracle */
+/*==========================================*/
+#form-body {
+	background: #F2F2F2;
+}
+
+.field-ul {
+	border: 1px solid #ddd;
+	background-color: white;
+}
+
+.legend-icon:before {
+	content: "|" !important;
+	color: #1190FF !important;
+	font-weight: bold;
+}
+
+/* 选框获得焦点的样式 */
+.mini-checkbox:focus, .mini-checkboxlist-item:focus, .mini-radiobuttonlist-item:focus {
+	border: 1px dotted #1190ff;
+}
+
+.mini-required .mini-textbox-border, .mini-required .mini-buttonedit-border {
+	background: mintcream;
+}

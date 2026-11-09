@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Minecraft 1.7.10 原版 GUI 复刻 · 规格文档</title>
+<style>
+  /* ============================================================
+     尺寸体系: 1 MC GUI px = 3 CSS px(mc1710 技能源码实证)
+     本页每个组件都是规格文档:CSS 值 ÷3 = 游戏 GUI 坐标,逐元素翻译进
+     drawTexturedModalRect / drawRect / drawGradientRect / drawString。
+     禁则:无圆角/无粗体/无 text-shadow(白字1px阴影除外)/无字距/无投影滤镜。
+     ============================================================ */
+  /* ⚠ 本页 * reset 仅限独立静态页(与 terminal.html 原型同体系);
+     嵌入宿主页面(Miracle/miniui)时禁用通配符/全局 reset,样式改显式类名 */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    /* 色板与 DESIGN.md 一一对应;数值=像素采样/源码实证 */
+    --panel-bg:#c6c6c6; --out-light:#ffffff; --out-dark:#555555;
+    --slot-bg:#8b8b8b; --in-dark:#373737; --in-light:#ffffff;
+    --btn-line:#030303; --btn-hl:#aaaaaa;
+    --btn-g1:#6b6b6b; --btn-g2:#707070; --btn-g3:#565656;
+    --hov-g1:#bec7ff; --hov-g2:#808ac1; --hov-g3:#5c669d;
+    --txt:#e0e0e0; --txt-hover:#ffffa0; --txt-dim:#a0a0a0;
+    --tip-line:#100010e6;             /* 0xF0100010 */
+    --tip-g1:rgba(0,0,255,.31);        /* 0x505000FF */
+    --tip-g2:rgba(40,0,127,.31);       /* 0x5028007F */
+  }
+  body { background:#2c2c2c; font-family:"Courier New",monospace; color:#e0e0e0;
+         display:flex; flex-direction:column; align-items:center; padding:18px; }
+  h1 { font-size:15px; color:#9fd49f; margin-bottom:3px; }
+  .sub { font-size:12px; color:#888; margin-bottom:12px; }
+  section { margin-bottom:24px; }
+  .spec { font-size:12px; color:#9fd49f; margin-bottom:6px; }
+  .spec b { color:#e0e0e0; }
+  .demo { background:#000; padding:18px; display:flex; gap:18px; flex-wrap:wrap; justify-content:center; }
+
+  /* ===== 1. 标准按钮 200×20 GUI → 600×60 CSS =====
+     游戏 = widgets.png 贴图段 u0 / v46+k*20 (k=0常态/1悬停/2禁用), 左段 u0..200-w + 右段镜像;
+     HTML 渐变为该贴图的像素采样近似,复刻进游戏时用贴图。 */
+  .vbtn { width:600px; height:60px; display:flex; align-items:center; justify-content:center;
+          background:linear-gradient(var(--btn-g1),var(--btn-g2) 40%,var(--btn-g3));
+          border:3px solid var(--btn-line); box-shadow:inset 0 3px 0 var(--btn-hl);
+          color:var(--txt); font-family:inherit; font-size:24px;               /* 字高 8 GUI */
+          text-shadow:2px 2px 0 #1f1f1f;                                        /* +1px 阴影(仅白字允许) */
+          cursor:pointer; user-select:none; }
+  .vbtn:hover { background:linear-gradient(var(--hov-g1),var(--hov-g2) 40%,var(--hov-g3)); color:var(--txt-hover); }
+  .vbtn:active { box-shadow:inset 0 -3px 0 var(--btn-hl); }
+  .vbtn.disabled { color:var(--txt-dim); background:linear-gradient(#4a4a4a,#404040 40%,#3a3a3a); cursor:default; }
+  .vbtn.half { width:294px; }   /* 98×20 GUI:两枚半宽并排 = 主菜单经典布局 */
+
+  /* ===== 2. 标准容器 176×166 GUI → 528×498 CSS =====
+     面板边 3px(1 GUI)外凸:上左亮下右暗;标题白字(带阴影)居中 y≈6;
+     玩家背包区 3×9 起 y=84(84+3×18=138 结束),hotbar y=142(间距 4 GUI,ContainerPlayer 实证);
+     顶部 y=17..70 为容器自定义区(工作台/熔炉/终端在此布局)。 */
+  .gui { width:528px; background:var(--panel-bg);
+         border:9px solid; border-color:var(--out-light) var(--out-dark) var(--out-dark) var(--out-light);
+         padding:0; position:relative; color:#404040; }
+  .gui .title { position:absolute; left:0; right:0; top:18px; text-align:center;
+                color:#404040; font-size:24px; }   /* 容器标题深灰,drawFG 层 */
+  .gui .custom-zone { height:141px; margin:51px 24px 0;    /* y17..70 示意框,复刻时替换 */
+                border:3px dashed #9a9a9a; display:flex; align-items:center; justify-content:center;
+                color:#707070; font-size:18px; }
+  .grid { display:grid; grid-template-columns:repeat(9,54px); }
+  .inv  { margin-left:24px; margin-top:9px; }   /* 背包区贴齐 y=84 附近(与顶部区间隔) */
+  .hot  { margin-left:24px; margin-top:12px; }  /* 4 GUI 间距 → 12px */
+  .cell { width:54px; height:54px; background:var(--slot-bg);   /* 槽 18×18 GUI */
+          border-top:3px solid var(--in-dark); border-left:3px solid var(--in-dark);
+          border-right:3px solid var(--in-light); border-bottom:3px solid var(--in-light);
+          position:relative; }
+  .cell.hover-demo:hover::after { content:""; position:absolute; inset:3px;   /* 悬停槽高亮 0x80FFFFFF */
+          background:rgba(255,255,255,.5); }
+
+  /* ===== 3. tooltip:行高 10 GUI;边 1px;首行白余行灰(§7) ===== */
+  .tipwrap { position:relative; display:inline-block; }
+  .tip { position:absolute; left:120%; top:0; z-index:9; white-space:nowrap; display:none;
+         background:linear-gradient(var(--tip-g1),var(--tip-g2));
+         border:3px solid var(--tip-line); padding:6px 12px; }
+  .tipwrap:hover .tip { display:block; }
+  .tip .l1 { color:#fff; font-size:24px; line-height:30px; }
+  .tip .l2 { color:#a0a0a0; font-size:24px; line-height:30px; }
+
+  /* ===== 4. 熔炉进度:箭头 24×16 GUI(贴图 u176 v14);进度条为原型拍板样式 ===== */
+  .arrow { width:72px; height:48px; background:#8b8b8b; position:relative;
+           border:3px solid var(--in-dark); }
+  .arrow .fill { position:absolute; left:0; top:0; bottom:0; width:60%;
+           background:#7fd47f; }
+  .prog { width:162px; height:30px; background:#4a4a4a;
+          border:3px solid; border-color:var(--in-dark) var(--in-light) var(--in-light) var(--in-dark);
+          position:relative; overflow:hidden; }
+  .prog .fill { position:absolute; left:0; top:0; bottom:0; width:45%; background:#7fd47f; }
+
+  /* ===== 5. 滚动条 12 宽 / 滑块高 15 GUI(vanilla creative tabs.png) ===== */
+  .vbar { width:36px; height:240px; background:var(--slot-bg);
+          border:6px solid; border-color:var(--in-dark) var(--in-light) var(--in-light) var(--in-dark);
+          position:relative; }
+  .vbar .k { position:absolute; left:0; top:60px; width:12px; height:45px;
+             background:var(--panel-bg);
+             border:3px solid; border-color:var(--out-light) var(--out-dark) var(--out-dark) var(--out-light); }
+
+  /* ===== 6. HUD 示意(标注:HUD 数值未源码实证,按 18 槽节奏推导,复刻前以 widgets.png 校准) ===== */
+  .hud { position:relative; width:546px; height:180px; }
+  .hudhot { position:absolute; left:0; bottom:0; display:grid; grid-template-columns:repeat(9,54px);
+            background:rgba(0,0,0,.35); border:3px solid #1a1a1a; }
+  .hudhot .cell { border:none; background:rgba(139,139,139,.55); }
+  .hudhot .sel::after { content:""; position:absolute; inset:-6px;      /* 选中格白框示意 */
+            border:6px solid #fff; z-index:2; }
+  .xpbar { position:absolute; left:6px; bottom:66px; width:534px; height:18px;
+           background:#000; border:3px solid #1a1a1a; }
+  .xpbar .fill { height:100%; width:64%; background:#80ff20; }
+  .xptext { position:absolute; left:0; width:546px; bottom:60px; text-align:center;
+           color:#80ff20; font-size:24px; text-shadow:2px 2px 0 #1f1f1f; }
+  .hearts { position:absolute; left:6px; bottom:96px; display:flex; gap:6px; }
+  .heart { width:27px; height:27px; position:relative; }
+  .heart::before { content:""; position:absolute; inset:0;
+    background:conic-gradient(from 90deg at 50% 38%, #c00000 0 25%, transparent 0); }
+  .heart.half::before { background:conic-gradient(from 90deg at 50% 38%, #c00000 0 12.5%, #3a0c0c 12.5% 25%, transparent 0); }
+  .heart.empty::before { background:conic-gradient(from 90deg at 50% 38%, #3a0c0c 0 25%, transparent 0); }
+  .hudnote { color:#888; font-size:12px; margin-top:6px; }
+</style>
+</head>
+<body>
+<h1>Minecraft 1.7.10 原版 GUI 复刻</h1>
+<div class="sub">规格文档:CSS ÷3 = 游戏 GUI px;复刻 = 逐元素翻译(贴图段 / drawRect / drawGradientRect / drawString)</div>
+
+<section>
+  <div class="spec"><b>① 标准按钮 200×20 GUI</b>(600×60) — widgets.png v46+k×20;文字 E0E0E0/悬停 FFFFA0/禁用 A0A0A0,字高 8,y=(20-8)/2=6</div>
+  <div class="demo">
+    <div class="vbtn">游戏(常态 · 悬停变蓝紫+黄字)</div>
+    <div class="vbtn disabled">选项…(禁用)</div>
+    <div class="vbtn half">确定</div><div class="vbtn half">取消</div>
+  </div>
+</section>
+
+<section>
+  <div class="spec"><b>② 标准容器 176×166 GUI</b>(528×498) — 背包 3×9 起 y84 · hotbar y142(间距4) · 左右边距 8 · 槽 18 · 悬停槽白罩</div>
+  <div class="demo">
+    <div class="gui">
+      <div class="title">容 器</div>
+      <div class="custom-zone">容器自定义区 y17..70(工作台/熔炉/终端在此布局)</div>
+      <div class="grid inv">
+        <div class="cell hover-demo"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      </div>
+      <div class="grid hot">
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      </div>
+    </div>
+    <div class="tipwrap">
+      <div class="cell" style="cursor:help;"></div>
+      <div class="tip"><div class="l1">钻石剑</div><div class="l2">攻击伤害 +7</div><div class="l2">耐久 1562/1563</div></div>
+    </div>
+  </div>
+  <div class="sub" style="margin-top:6px;">tooltip:行高 10 GUI,首行白、余行 §7 灰,边 0xF0100010,内 0x505000FF→0x5028007F 渐变</div>
+</section>
+
+<section>
+  <div class="spec"><b>③ 熔炉进度</b> — 箭头 24×16 GUI(u176 v14 贴图);进度条槽/填充为原型拍板(#4a4a4a / #7fd47f)</div>
+  <div class="demo" style="align-items:center;">
+    <div class="arrow"><div class="fill"></div></div>
+    <div class="prog"><div class="fill"></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="spec"><b>④ 滚动条 12 宽 / 滑块高 15 GUI</b>(36/45) — vanilla creative tabs.png;滑块 = 外凸边小面板</div>
+  <div class="demo" style="justify-content:flex-start;"><div class="vbar"><div class="k"></div></div></div>
+</section>
+
+<section>
+  <div class="spec"><b>⑤ HUD 示意</b> — ⚠ 以下数值按 18 槽节奏推导,未源码实证;复刻前以 widgets.png 实测校准</div>
+  <div class="demo">
+    <div class="hud">
+      <div class="hearts">
+        <div class="heart"></div><div class="heart"></div><div class="heart"></div>
+        <div class="heart"></div><div class="heart"></div><div class="heart half"></div>
+        <div class="heart empty"></div><div class="heart empty"></div><div class="heart empty"></div><div class="heart empty"></div>
+      </div>
+      <div class="xpbar"><div class="fill"></div></div>
+      <div class="xptext">27</div>
+      <div class="hudhot">
+        <div class="cell"></div><div class="cell"></div><div class="cell sel" style="position:relative;"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      </div>
+    </div>
+  </div>
+  <div class="hudnote">HUD(心/经验条/hotbar 外框)的像素规格未在 mc1710 技能实证,HTML 数值为槽节奏推导;进游戏前用 GuiIngame.java + widgets.png 校准。</div>
+</section>
+
+</body>
+</html>
