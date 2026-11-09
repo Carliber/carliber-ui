@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实战档案 · MC 服务器驾驶舱 — carliber-ui 全流程展示</title>
+<style>
+  :root { --ink:#24292f; --body:#3d434b; --muted:#6b7280; --accent:#2e6e57;
+          --accent-soft:#e7f0ec; --canvas:#f7f7f4; --card:#fff; --line:#e4e6e1;
+          --mc-panel:#c6c6c6; --mc-d:#555; --mc-l:#fff; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--canvas); color:var(--body);
+         font:16px/1.75 "PingFang SC","Microsoft YaHei",sans-serif; }
+  .wrap { max-width: 920px; margin:0 auto; padding:0 24px; }
+  a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
+
+  header { padding:72px 0 48px; }
+  .kick { color:var(--accent); font-size:14px; margin-bottom:10px; }
+  h1 { font-size:clamp(30px,5vw,42px); color:var(--ink); line-height:1.3; margin-bottom:14px; }
+  .lead { font-size:18px; max-width:36em; }
+  .tags { margin-top:22px; display:flex; gap:8px; flex-wrap:wrap; }
+  .tags span { background:var(--accent-soft); color:var(--accent); border-radius:5px; padding:4px 12px; font-size:13px; }
+
+  h2 { font-size:26px; color:var(--ink); margin:52px 0 20px; }
+  h2 small { font-size:14px; color:var(--muted); font-weight:400; margin-left:10px; }
+
+  /* 成果大图 */
+  .shot { background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .shot img { display:block; width:100%; }
+  .shot figcaption { padding:12px 16px; font-size:13px; color:var(--muted); background:var(--card); }
+
+  /* 过程时间线 */
+  .step { display:flex; gap:18px; padding:18px 0; border-bottom:1px solid var(--line); }
+  .step:last-child { border-bottom:none; }
+  .no { flex:none; width:34px; height:34px; border-radius:50%; background:var(--accent); color:#fff;
+        display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:600; }
+  .step h3 { font-size:16.5px; color:var(--ink); margin-bottom:6px; }
+  .step p { font-size:14.5px; }
+  .step .file { font-size:13px; color:var(--muted); margin-top:6px; }
+  .step .file code { background:#eef1ee; border-radius:4px; padding:1px 7px; }
+
+  /* 方法论对照表 */
+  table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line);
+          border-radius:10px; overflow:hidden; font-size:14.5px; }
+  th, td { text-align:left; padding:11px 16px; border-bottom:1px solid var(--line); }
+  th { background:var(--accent-soft); color:var(--ink); font-weight:600; }
+  tr:last-child td { border-bottom:none; }
+  .pass { color:var(--accent); font-weight:600; }
+
+  /* lint 修复对比 */
+  .fix { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .fix .cell { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px; }
+  .fix .cell h4 { font-size:14px; margin-bottom:8px; }
+  .fix .bad h4 { color:#b42318; } .fix .good h4 { color:var(--accent); }
+  .fix p { font-size:14px; }
+  @media (max-width:640px){ .fix { grid-template-columns:1fr; } }
+
+  .cta { margin:56px 0 40px; background:var(--accent-soft); border:1px solid var(--accent);
+         border-radius:10px; padding:28px; }
+  .cta h3 { color:var(--ink); font-size:18px; margin-bottom:8px; }
+  footer { padding:28px 0 56px; font-size:13.5px; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="kick">carliber-ui 实战档案 · 全流程留档 · v1.0.3 规则下产出</div>
+  <h1>MC 服务器驾驶舱:<br>一次从需求书到 8.6 分的完整走流程</h1>
+  <p class="lead">编造的需求,真实的流程。用 Minecraft 原版材质语言造一个"游戏里不存在的界面",检验技能的基线复用、lint 抓缺陷、矩阵终检与多轮收敛是否真的在工作。</p>
+  <div class="tags">
+    <span>类型:产品工作区</span><span>基线:Minecraft DESIGN.md</span>
+    <span>8 维矩阵:7✅ 1⚠️ 0❌(修复后)</span><span>终评 8.6/10</span>
+  </div>
+</header>
+
+<section class="wrap" id="result">
+  <h2>最终成果 <small>1280×800 首屏判定 · 零控制台错误 · lint 清零</small></h2>
+  <figure class="shot">
+    <img src="assets/cockpit-shot.png" alt="MC 服务器驾驶舱原型:原版材质 KPI 条、直方图、玩家槽位行、控制台日志、widgets 按钮">
+    <figcaption>cockpit.html · 面板 #c6c6c6 外凸立体边 · 槽位内凹 · widgets 三态按钮 · 全控件 3px 网格(1 GUI px = 3 CSS px)</figcaption>
+  </figure>
+</section>
+
+<section class="wrap" id="flow">
+  <h2>八步留档 <small>每一步的产物都在仓库里可查</small></h2>
+  <div class="step"><div class="no">1</div><div>
+    <h3>编需求,写需求书</h3>
+    <p>用户/场景/功能范围五块/约束/验收标准/明确不做——模拟数据在需求书就声明标注,真实性维度前置。</p>
+    <div class="file">存档:<code>00-需求书.md</code></div>
+  </div></div>
+  <div class="step"><div class="no">2</div><div>
+    <h3>判定类型,锁定主要矛盾</h3>
+    <p>产品工作区。主要矛盾:<b>全服态势一眼可判 vs 五类指标的信息洪流</b>——"服务器正常吗"必须 5 秒不滚动可答。次级张力(MC 视觉密度 vs 数据密度)的处置:控件级严格复刻,布局级自由编排。</p>
+    <div class="file">存档:<code>01-类型与矛盾.md</code></div>
+  </div></div>
+  <div class="step"><div class="no">3</div><div>
+    <h3>方向卡 + 差异检验</h3>
+    <p>北极星"一眼知健康,三击达操作"。镜像测试:主流 MC 面板全是扁平白卡,本页原版材质贯穿——差异化成立,不撞脸。</p>
+    <div class="file">存档:<code>02-方向卡.md</code></div>
+  </div></div>
+  <div class="step"><div class="no">4</div><div>
+    <h3>灰度结构 + 删除清单</h3>
+    <p>文字线框排层级:在线人数唯一主角,操作条唯一动作组。删掉登录横幅、logo、世界时间——每删一项都在档。</p>
+    <div class="file">存档:<code>03-灰度结构.md</code></div>
+  </div></div>
+  <div class="step"><div class="no">5</div><div>
+    <h3>实现(自查先于截图)</h3>
+    <p>写完先自查,抓到 emoji 当图标——像素材质语境硬伤,截图前就修掉,没浪费一轮取证。</p>
+    <div class="file">产出:<code>cockpit.html</code>(单文件零依赖)</div>
+  </div></div>
+  <div class="step"><div class="no">6</div><div>
+    <h3>截图 lint,抓到真缺陷</h3>
+    <p>首轮 13 处对比度违规:<b>警示黄字放在灰色槽底上 1.05:1,完全不可读</b>。修正方案:语义色改走边框(符合 widgets 语言),文字恒深色。复验清零。</p>
+    <div class="file">证据:<code>shots/page.png</code> + <code>report.json</code></div>
+  </div></div>
+  <div class="step"><div class="no">7</div><div>
+    <h3>矩阵终检,❌ 必修闭环</h3>
+    <p>8 维逐检:揪出空态缺失(❌必修)→ 实现"服务器空闲中,猫在后台睡觉"空态并出验证截图;800 宽窄档复验无横向滚动;两处豁免全部记录理由。</p>
+    <div class="file">存档:<code>04-评审与矩阵.md</code> · 证据:<code>shots/empty/</code> <code>shots/narrow/</code></div>
+  </div></div>
+  <div class="step"><div class="no">8</div><div>
+    <h3>收敛,停</h3>
+    <p>终评 8.6 ≥ 8.5 且无 ❌ —— 触发多轮收敛的停止条件,<b>不再迭代</b>。知道什么时候停,和知道怎么改一样重要。</p>
+    <div class="file">本页即最终展示层</div>
+  </div></div>
+</section>
+
+<section class="wrap" id="fix">
+  <h2>一次真实的缺陷修复 <small>lint 不是装饰,它真的在抓</small></h2>
+  <div class="fix">
+    <div class="cell bad">
+      <h4>✘ 修复前(首轮 lint 13 处违规)</h4>
+      <p>警示语义 = 文字变黄(<code>#b8860b</code>)放在灰色槽底(<code>#8b8b8b</code>)上——对比度 <b>1.05:1</b>,人眼基本不可见。"颜色即状态"的设计意图直接失效。</p>
+    </div>
+    <div class="cell good">
+      <h4>✓ 修复后(lint 清零)</h4>
+      <p>语义走 <b>3px 警示色边框</b>(widgets 语言内的表达),文字恒深色 <code>#404040</code>。状态一眼可辨,可读性达标,材质语言未被破坏。</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="matrix">
+  <h2>8 维矩阵终检 <small>一屏看全质量面</small></h2>
+  <table>
+    <tr><th>维度</th><th>判定</th><th>一句话依据</th></tr>
+    <tr><td>层级与主角</td><td class="pass">✅</td><td>在线人数唯一主角;主动作首屏可达</td></tr>
+    <tr><td>差异化</td><td class="pass">✅</td><td>镜像测试:主流面板全扁平白卡,不撞脸</td></tr>
+    <tr><td>任务与步数</td><td class="pass">✅</td><td>健康 0 点击,操作 1–2 击</td></tr>
+    <tr><td>可访问性</td><td class="pass">✅</td><td>对比度修复后 lint 清零</td></tr>
+    <tr><td>密度与减法</td><td class="pass">✅</td><td>删除清单执行,无装饰区块</td></tr>
+    <tr><td>真实性</td><td class="pass">✅</td><td>模拟数据双重标注,零伪造指标</td></tr>
+    <tr><td>一致性与系统</td><td>⚠️ 豁免</td><td>2 个语义色为像素语境新建,理由已记录</td></tr>
+    <tr><td>边界与状态</td><td class="pass">✅</td><td>空态与窄档修复后截图闭环</td></tr>
+  </table>
+</section>
+
+<section class="wrap" id="feedback">
+  <h2>流程的反哺 <small>实战也在修技能自己</small></h2>
+  <p>这次走流程时,方向卡最初用了无依据的 <code>1440×900</code> 当判定视口——被当场抓住。追查发现技能文档里写着写死的视口值,于是技能当场升级到 <b>v1.0.3</b>:视口判定全部去固定值,改为按产品环境从常见档位表选型,尺寸写法确立 <code>clamp()/vh/vw/%</code> 优先原则。校准不是走过场,流程和技能本身一起被修。</p>
+</section>
+
+<div class="wrap cta">
+  <h3>自己跑一遍</h3>
+  <p>技能、基线、本档案全部在仓库里。克隆后把 <code>SKILL.md</code> 放进你的 Agent 技能目录,下一个界面任务它就会开始工作。</p>
+  <p style="margin-top:10px;"><a href="https://github.com/Carliber/carliber-ui"><b>→ GitHub 仓库</b></a> · <a href="index.html">← 返回主页</a> · 原型本体:<a href="cockpit-demo/cockpit.html">cockpit.html(可在线操作)</a> · 全部八步档案:<a href="https://github.com/Carliber/carliber-ui/tree/main/docs/cockpit-demo">docs/cockpit-demo/</a></p>
+</div>
+
+<footer class="wrap">carliber-ui · fork 自 oil-ui 0.33.2 · 本页为 cockpit-demo 实战档案的展示层 · 演示数据快照,非实时</footer>
+
+</body>
+</html>
