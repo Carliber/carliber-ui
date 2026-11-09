@@ -38,6 +38,11 @@
   .step p { font-size:14.5px; }
   .step .file { font-size:13px; color:var(--muted); margin-top:6px; }
   .step .file code { background:#eef1ee; border-radius:4px; padding:1px 7px; }
+  .artifact { margin-top:12px; background:#f0f3f0; border-left:3px solid var(--accent);
+              border-radius:0 6px 6px 0; padding:12px 16px; font-size:13.5px; color:var(--ink); }
+  .artifact .cap { font-size:12px; color:var(--muted); display:block; margin-bottom:4px; }
+  .artifact pre { font-family:Consolas,monospace; font-size:12px; line-height:1.55;
+                  white-space:pre; overflow-x:auto; margin:0; }
 
   /* 方法论对照表 */
   table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line);
@@ -55,8 +60,8 @@
   .fix p { font-size:14px; }
   @media (max-width:640px){ .fix { grid-template-columns:1fr; } }
 
-  .cta { margin:56px 0 40px; background:var(--accent-soft); border:1px solid var(--accent);
-         border-radius:10px; padding:28px; }
+  .cta { margin:56px auto 40px; background:var(--accent-soft); border:1px solid var(--accent);
+         border-radius:10px; padding:28px; max-width:920px; text-align:center; }
   .cta h3 { color:var(--ink); font-size:18px; margin-bottom:8px; }
   footer { padding:28px 0 56px; font-size:13.5px; color:var(--muted); }
 </style>
@@ -86,42 +91,54 @@
   <div class="step"><div class="no">1</div><div>
     <h3>编需求,写需求书</h3>
     <p>用户/场景/功能范围五块/约束/验收标准/明确不做——模拟数据在需求书就声明标注,真实性维度前置。</p>
-    <div class="file">存档:<code>00-需求书.md</code></div>
+    <div class="artifact"><span class="cap">半成品 · 需求书验收标准原文</span>"目标视口打开,5 秒内不滚动可判:项目活不活跃、有没有人用、有没有待处理问题;模拟数据零容忍。"</div>
+  <div class="file">存档:<code>00-需求书.md</code></div>
   </div></div>
   <div class="step"><div class="no">2</div><div>
     <h3>判定类型,锁定主要矛盾</h3>
     <p>产品工作区。主要矛盾:<b>全服态势一眼可判 vs 五类指标的信息洪流</b>——"服务器正常吗"必须 5 秒不滚动可答。次级张力(MC 视觉密度 vs 数据密度)的处置:控件级严格复刻,布局级自由编排。</p>
-    <div class="file">存档:<code>01-类型与矛盾.md</code></div>
+    <div class="artifact"><span class="cap">半成品 · 主要矛盾原文</span>"全服态势一眼可判 vs 五类指标的信息洪流 —— '服务器正常吗'必须 5 秒内、不滚动、不读数字就能回答(颜色先行)。"</div>
+  <div class="file">存档:<code>01-类型与矛盾.md</code></div>
   </div></div>
   <div class="step"><div class="no">3</div><div>
     <h3>方向卡 + 差异检验</h3>
     <p>北极星"一眼知健康,三击达操作"。镜像测试:主流 MC 面板全是扁平白卡,本页原版材质贯穿——差异化成立,不撞脸。</p>
-    <div class="file">存档:<code>02-方向卡.md</code></div>
+    <div class="artifact"><span class="cap">半成品 · 北极星与决策</span>"一眼知健康,三击达操作。控件级像素严格复刻,布局级自由编排;色彩令牌全部出自基线,零新色(2 个语义色为像素语境新建并注明)。"</div>
+  <div class="file">存档:<code>02-方向卡.md</code></div>
   </div></div>
   <div class="step"><div class="no">4</div><div>
     <h3>灰度结构 + 删除清单</h3>
     <p>文字线框排层级:在线人数唯一主角,操作条唯一动作组。删掉登录横幅、logo、世界时间——每删一项都在档。</p>
-    <div class="file">存档:<code>03-灰度结构.md</code></div>
+    <div class="artifact"><span class="cap">半成品 · 灰度文字线框</span><pre>▓ 顶部条: ★在线 8/20  ▏TPS▏内存▏延迟(阈值变色)
+┏━ 62% ━━━━━━━━━━┓ ┏━ 38% ━━━━━┓
+┃ 趋势直方图 28柱 ┃ ┃ 控制台 40条 ┃
+┏━ 62% 玩家表 8行 ━┓ ┗━━━━━━━━━┛
+▓ 操作条: [公告][传送][白名单][备份]</pre></div>
+  <div class="file">存档:<code>03-灰度结构.md</code></div>
   </div></div>
   <div class="step"><div class="no">5</div><div>
     <h3>实现(自查先于截图)</h3>
     <p>写完先自查,抓到 emoji 当图标——像素材质语境硬伤,截图前就修掉,没浪费一轮取证。</p>
-    <div class="file">产出:<code>cockpit.html</code>(单文件零依赖)</div>
+    <div class="artifact"><span class="cap">半成品 · 实现规模</span>单 HTML 280 行 · 零外部依赖 · 全控件 3px 网格 · 色板 100% 出自基线 tokens</div>
+  <div class="file">产出:<code>cockpit.html</code>(单文件零依赖)</div>
   </div></div>
   <div class="step"><div class="no">6</div><div>
     <h3>截图 lint,抓到真缺陷</h3>
     <p>首轮 13 处对比度违规:<b>警示黄字放在灰色槽底上 1.05:1,完全不可读</b>。修正方案:语义色改走边框(符合 widgets 语言),文字恒深色。复验清零。</p>
-    <div class="file">证据:<code>shots/page.png</code> + <code>report.json</code></div>
+    <div class="artifact"><span class="cap">半成品 · 首轮 lint 摘录(report.json)</span>"div.k『TPS』2.02:1 … div.v.mono『62%』1.05:1 … 共 13 处" → 语义色改边框承载 → 复验清零</div>
+  <div class="file">证据:<code>shots/page.png</code> + <code>report.json</code></div>
   </div></div>
   <div class="step"><div class="no">7</div><div>
     <h3>矩阵终检,❌ 必修闭环</h3>
     <p>8 维逐检:揪出空态缺失(❌必修)→ 实现"服务器空闲中,猫在后台睡觉"空态并出验证截图;800 宽窄档复验无横向滚动;两处豁免全部记录理由。</p>
-    <div class="file">存档:<code>04-评审与矩阵.md</code> · 证据:<code>shots/empty/</code> <code>shots/narrow/</code></div>
+    <div class="artifact"><span class="cap">半成品 · 矩阵终检行(修复前)</span>"| 8 | 边界与状态 | ❌1 | 方向卡承诺的空态未实现 — 必修 |" → 实现空态+双档截图 → "| 8 | ✅ | 闭环 |"</div>
+  <div class="file">存档:<code>04-评审与矩阵.md</code> · 证据:<code>shots/empty/</code> <code>shots/narrow/</code></div>
   </div></div>
   <div class="step"><div class="no">8</div><div>
     <h3>收敛,停</h3>
     <p>终评 8.6 ≥ 8.5 且无 ❌ —— 触发多轮收敛的停止条件,<b>不再迭代</b>。知道什么时候停,和知道怎么改一样重要。</p>
-    <div class="file">本页即最终展示层</div>
+    <div class="artifact"><span class="cap">半成品 · 收敛记录</span>"终评 8.6 ≥ 8.5 且无 ❌ — 触发 iterate 停止条件,不再迭代。知道什么时候停,和知道怎么改一样重要。"</div>
+  <div class="file">本页即最终展示层</div>
   </div></div>
 </section>
 
