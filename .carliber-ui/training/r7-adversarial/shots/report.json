@@ -1,0 +1,22 @@
+[
+  {
+    "file": "page.png",
+    "state": null,
+    "size": "1280x800",
+    "zoom": 1,
+    "animationWaitMs": 0,
+    "issues": [],
+    "lint": [
+      {
+        "rule": "contrastLow",
+        "label": "文字对比度不达标（正文低于 3:1，大字低于 2.5:1）",
+        "count": 5,
+        "examples": [
+          "span.v.tpsa「19.2」（1.40:1）",
+          "span.name「备用通道状态」（1.27:1）",
+          "span.v「channel-2 standby」（1.27:1）"
+        ]
+      }
+    ]
+  }
+]

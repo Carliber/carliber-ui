@@ -119,6 +119,13 @@ error-on-panel:   "#8f2f24"       # 错误文案(#c64545 太亮, 灰底 3.4:1)
 link-on-panel:    "#0a5bb5"       # 链接(#1190FF 是黑底语境色, 灰底仅 1.90:1 禁用)
 success-deep:     "#0f3d0f"       # 成功勾描边
 
+# 语义/系列扩展色(R2/R3 实战新增, 均为浅底深档):
+rank-gold:        "#d4a017"       # 榜单金银铜: #d4a017 / #9aa0a6 / #a2714b
+warn-deep:        "#b8860b"       # 警示(WARN 日志/内存阈值边框)
+series-death:     "#7fae6a"       # 死亡类型 PVE; PVP=#c64545; 环境=#b0b0b0(需垫槽底)
+series-stock:     "#f4d03f"       # 库存/峰值系列黄(黑底黄字语境 #ffffa0 的浅底配对)
+grid-line:        "#b5b5b5"       # 图表网格线(面板上最淡)
+
 # 导航/tabs 当前页高亮配方(浅底, R3 实测): #1190FF 文字放灰面板仅 1.90:1, 禁止单用
 tabs-active:      "文字 #0a5bb5 + 3px 底条 #1190FF"   # 双通道: 文字可读 + 品牌蓝装饰
 ```
