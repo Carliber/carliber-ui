@@ -2,6 +2,11 @@
 
 本技能 fork 自 oil-ui 0.33.2(MIT,致谢 oil-oil),此后独立演进。
 
+## 1.0.1(2026-11-09)
+
+- minecraft 基线新增「版本差异」节:1.7.10/1.12.2/1.20.1 官方 client.jar 解包实证——GUI 贴图三版本同规格(widgets/icons/容器全 256×256),字体 1.20.1 起 JSON provider 化
+- 新增 `translate-1.12.md`、`translate-1.20.md` 版本增量映射表:一次 HTML 原型,多版本翻译
+
 ## 1.0.0(2026-11-09)
 
 - 更名 `ui-design` → **`carliber-ui`**,独立版本号起 1.0.0,工作区目录改为 `.carliber-ui/`

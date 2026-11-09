@@ -90,9 +90,23 @@ overflow: "renderScaledText(GL 横向缩放)兜底,不换行不省略"
 
 暗化背景 → 背景贴图(未平移,guiLeft/guiTop 原点) → 按钮 → 槽+悬停高亮 → 前景文字(平移后)。
 
+## 版本差异(实物实证:1.7.10 / 1.12.2 / 1.20.1 官方 client.jar 解包,2026-11-09)
+
+**资源层三版本同规格**:widgets.png、icons.png 及全部容器贴图(crafting_table/furnace/generic_54/inventory/creative tabs)均为 256×256 画布——本文件的像素网格、tokens 与 mcgui.html 规格跨版本通用。
+
+| 层 | 1.7.10 | 1.12.2 | 1.20.1 |
+| --- | --- | --- | --- |
+| GUI 贴图 | widgets/icons/container 全 256×256 | 同左(文件名/组织一致) | 同左(新增 bundle/cartography 等新容器贴图;advancements 拆子目录;尚未 sprites 化) |
+| 字体 | textures/font/ascii.png 位图 + unicode_page_* | 同左 | ascii.png 仍在,**新增 font/default.json**(JSON provider 链:default→ascii + unifont) |
+| 绘制 API | drawTexturedModalRect + 裸 GL11 + Tessellator | 同名 API + GlStateManager(近亲,写法几乎照搬) | GuiGraphics.blit + RenderSystem/shader(断代:无 immediate GL) |
+| 事件 | mouseClicked(III)V 等 | 基本同 1.7 | 签名带 double 坐标/modifiers,render(GuiGraphics,…),initGui→addRenderableWidget |
+
+API 层为通识级描述,真翻译前以对应版本源码/yarn 映射核验(mc1710 的 javap 纪律同理)。翻译增量见 [translate.md](translate.md)(1.7.10)、[translate-1.12.md](translate-1.12.md)、[translate-1.20.md](translate-1.20.md)。
+
 ## 证据
 
 - `~/.agents/skills/mc1710/SKILL.md` §二(GUI 绘制机制,全部源码实证)
 - 个人 1.7.10 Mod 项目原型(本地)— 原型 v27,用户拍板的 1:3 换算体系
 - 本目录 `mcgui.html` — 原版 GUI 组件 HTML 复刻(按钮/槽位/hotbar/tooltip/HUD/进度条)
-- 本目录 [translate.md](translate.md) — HTML 原型→Java GUI 翻译方法(对照表+映射规则,模型照此自行翻译)
+- 本目录 [translate.md](translate.md) — HTML 原型→Java GUI 翻译方法(对照表+映射规则,模型照此自行翻译);另附 [translate-1.12.md](translate-1.12.md) 与 [translate-1.20.md](translate-1.20.md) 版本增量
+- 版本差异(1.7.10/1.12.2/1.20.1 官方 client.jar 解包实证:GUI 贴图三版本同规格 256×256;字体 1.20 起 JSON provider 化)见上方「版本差异」节
