@@ -1,0 +1,20 @@
+[
+  {
+    "file": "page.png",
+    "state": null,
+    "size": "390x844",
+    "zoom": 1,
+    "animationWaitMs": 0,
+    "issues": [],
+    "lint": [
+      {
+        "rule": "contrastLow",
+        "label": "文字对比度不达标（正文低于 3:1，大字低于 2.5:1）",
+        "count": 1,
+        "examples": [
+          "div.custom-zone「容器自定义区 y17..70(工作台/熔炉/终端」（2.90:1）"
+        ]
+      }
+    ]
+  }
+]
