@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC 服务器驾驶舱 · 加载态演示</title>
+<style>
+  :root { --panel:#c6c6c6; --slot:#8b8b8b; --out-l:#fff; --out-d:#555;
+          --in-d:#373737; --in-l:#fff; --ink:#404040; --txt-d:#e0e0e0; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1a1a1a; font:14px/1.6 "PingFang SC","Microsoft YaHei",sans-serif;
+         color:var(--ink); padding:clamp(12px,2vw,24px); }
+  .bar { background:var(--panel); border:9px solid;
+         border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
+         padding:0 clamp(12px,2vw,24px); display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .bar h1 { font-size:18px; }
+  .nav { display:flex; margin-left:auto; }
+  .nav a { padding:16px 18px 13px; color:var(--ink); text-decoration:none; font-size:14px;
+           border-bottom:3px solid transparent; }
+  .nav a:hover { color:#1190FF; }
+  .nav a[aria-current=page] { color:#0a5bb5; border-bottom-color:#1190FF; }
+  .panel { background:var(--panel); border:9px solid;
+           border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l); padding:12px; }
+  .panel h2 { font-size:15px; margin-bottom:9px; }
+  .panel h2::before { content:"| "; color:#1190FF; font-weight:700; }
+  .loadbox { display:flex; flex-direction:column; align-items:center; gap:12px; padding:66px 0; }
+  .lprog { width:min(420px,80%); height:27px; background:#4a4a4a;
+           border:3px solid; border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
+           position:relative; overflow:hidden; }
+  .lprog .fill { position:absolute; left:0; top:0; bottom:0; width:64%; background:#7fd47f; }
+  .ltext { font-family:Consolas,monospace; font-size:15px; margin-top:6px; }
+  .lsub { font-size:13px; color:#373737; }
+  .actions { margin-top:14px; display:flex; gap:15px; flex-wrap:wrap; }
+  .vbtn { min-width:180px; height:36px; display:flex; align-items:center; justify-content:center;
+          background:linear-gradient(#4a4a4a,#404040 40%,#3a3a3a); border:3px solid #030303;
+          color:#a0a0a0; font-size:14px; font-family:inherit; }
+  footer { margin-top:12px; color:#7a7a7a; font-size:12px; text-align:center; }
+  @media (prefers-reduced-motion: reduce) { .lfill { transition:none; } }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>MC 服务器驾驶舱</h1>
+  <nav class="nav">
+    <a href="#" aria-current="page">驾驶舱</a>
+    <a href="../r2-viz/economy.html">经济周报</a>
+    <a href="../r3-nav/players.html">排行榜</a>
+  </nav>
+</div>
+
+<div style="margin-top:14px;">
+  <div class="panel">
+    <h2>正在连接服务器…</h2>
+    <div class="loadbox">
+      <div class="lprog"><div class="fill"></div></div>
+      <div class="ltext">Building terrain… 64%</div>
+      <div class="lsub">拉取在线人数 / TPS / 日志缓存 · 超时 15s 后转断线态</div>
+    </div>
+  </div>
+</div>
+
+<div class="actions">
+  <button type="button" class="vbtn" disabled>全服公告</button>
+  <button type="button" class="vbtn" disabled>传送管理</button>
+  <button type="button" class="vbtn" disabled>白名单</button>
+  <button type="button" class="vbtn" disabled>立即备份</button>
+</div>
+
+<footer>加载态演示 · 数据为占位 · carliber-ui R12 · 超时转断线态(见 R11)</footer>
+
+</body>
+</html>

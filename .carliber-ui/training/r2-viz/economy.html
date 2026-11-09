@@ -43,7 +43,8 @@
   .lg { display:flex; align-items:center; gap:6px; padding:3px 12px; font-size:13px;
         background:linear-gradient(#6b6b6b,#707070 40%,#565656);
         border:3px solid #030303; box-shadow:inset 0 3px 0 #aaa;
-        color:var(--txt-d); cursor:pointer; user-select:none; }
+        color:var(--txt-d); cursor:pointer; user-select:none; font-family:inherit; }
+  .lg:focus-visible { outline:3px solid #fff; outline-offset:2px; }
   .lg i { width:12px; height:12px; flex:none; }
   .lg.off { background:linear-gradient(#4a4a4a,#404040 40%,#3a3a3a); color:#a0a0a0; box-shadow:none; }
   .lg.off i { background:#6b6b6b !important; }
@@ -76,9 +77,9 @@
   <div class="panel full">
     <h2>金币流动 · 近 7 天(点击图例开关系列)</h2>
     <div class="legend" id="lg-line">
-      <span class="lg" data-s="in"><i style="background:var(--in-flow)"></i>流入</span>
-      <span class="lg" data-s="out"><i style="background:var(--out-flow)"></i>流出</span>
-      <span class="lg off" data-s="stock" title="累计量级大, 点击开启"><i style="background:var(--stock)"></i>库存(累计)</span>
+      <button type="button" class="lg" data-s="in"><i style="background:var(--in-flow)"></i>流入</button>
+      <button type="button" class="lg" data-s="out"><i style="background:var(--out-flow)"></i>流出</button>
+      <button type="button" class="lg off" data-s="stock" title="累计量级大, 点击开启"><i style="background:var(--stock)"></i>库存(累计)</button>
     </div>
     <svg id="line-svg" viewBox="0 0 760 218" role="img" aria-label="金币流入流出七天折线图"></svg>
     <div class="note">口径:流入=拍卖行+杂货卖出;流出=商店采购+维修;库存=仓库余额。悬浮查看当日明细。</div>

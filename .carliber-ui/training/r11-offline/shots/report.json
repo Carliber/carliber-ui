@@ -1,0 +1,22 @@
+[
+  {
+    "file": "page.png",
+    "state": null,
+    "size": "1280x800",
+    "zoom": 1,
+    "animationWaitMs": 0,
+    "issues": [],
+    "lint": [
+      {
+        "rule": "contrastLow",
+        "label": "文字对比度不达标（正文低于 3:1，大字低于 2.5:1）",
+        "count": 48,
+        "examples": [
+          "h2「在线趋势 · 近 2 小时」（2.03:1）",
+          "span「-2h」（1.78:1）",
+          "span「-1h」（1.78:1）"
+        ]
+      }
+    ]
+  }
+]
