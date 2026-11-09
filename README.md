@@ -1,5 +1,7 @@
 # carliber-ui
 
+**在线主页**:https://carliber.github.io/carliber-ui/
+
 AI Agent 的界面设计技能。主流程:**判定页面类型 → 锁定主要矛盾 → 收敛设计方向 → 实现 → 独立评审 → 多轮打磨**,配 8 维质疑矩阵与多轮对比收敛协议。适用于网站、App、后台与组件的设计、改进与评审。
 
 由 [oil-ui](https://github.com/oil-oil/oil-ui) 0.33.2 fork(MIT,感谢 oil-oil)独立演进,变更见 [CHANGELOG.md](CHANGELOG.md)。
