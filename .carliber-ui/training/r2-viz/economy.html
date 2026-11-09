@@ -19,6 +19,11 @@
          border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
          padding:12px clamp(12px,2vw,24px); display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
   .bar h1 { font-size:18px; }
+  .nav { display:flex; margin-left:auto; }
+  .nav a { padding:16px 18px 13px; color:var(--ink); text-decoration:none; font-size:14px;
+           border-bottom:3px solid transparent; }
+  .nav a:hover { color:#1190FF; }
+  .nav a[aria-current=page] { color:#0a5bb5; border-bottom-color:#1190FF; }
   .bar .cap { color:#373737; font-size:13px; }
   .spacer { flex:1; }
   .back { color:#0a5bb5; font-size:13.5px; }
@@ -59,7 +64,11 @@
   <h1>经济与战斗周报</h1>
   <span class="cap">模拟 7 天快照 · 数据自洽标注</span>
   <div class="spacer"></div>
-  <a class="back" href="file:///Users/tongxl/.agents/skills/carliber-ui/.carliber-ui/cockpit-demo/cockpit.html">← 返回驾驶舱</a>
+  <nav class="nav">
+    <a href="../../cockpit-demo/cockpit.html">驾驶舱</a>
+    <a href="#" aria-current="page">经济周报</a>
+    <a href="../r3-nav/players.html">排行榜</a>
+  </nav>
 </div>
 
 <div class="grid">

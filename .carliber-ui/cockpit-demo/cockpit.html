@@ -24,7 +24,15 @@
   /* ===== 顶部条: 面板外凸边(基线: 上左亮下右暗) ===== */
   .bar { background:var(--panel); border:9px solid;
          border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
-         padding:12px clamp(12px,2vw,24px); display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+         padding:0 clamp(12px,2vw,24px); display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .bar .hero { display:flex; align-items:baseline; gap:12px; }
+  .bar .hero .num { font-size:clamp(28px,4vw,40px); font-weight:700; line-height:1; }
+  .bar .hero .cap { color:#6b6b6b; }
+  .nav { display:flex; margin-left:auto; }
+  .nav a { padding:16px 18px 13px; color:var(--ink); text-decoration:none; font-size:14px;
+           border-bottom:3px solid transparent; }
+  .nav a:hover { color:#1190FF; }
+  .nav a[aria-current=page] { color:#0a5bb5; border-bottom-color:#1190FF; }
   .hero { display:flex; align-items:baseline; gap:12px; }
   .hero .num { font-size:clamp(28px,4vw,40px); font-weight:700; line-height:1; }
   .hero .cap { color:#6b6b6b; }
@@ -108,6 +116,11 @@
   <div class="hero"><span class="num mono">8<span style="font-size:18px;color:#6b6b6b;">/20</span></span>
     <span class="cap">在线玩家 · 模组服 survival</span></div>
   <div class="spacer"></div>
+  <nav class="nav">
+    <a href="#" aria-current="page">驾驶舱</a>
+    <a href="../../r2-viz/economy.html">经济周报</a>
+    <a href="../r3-nav/players.html">排行榜</a>
+  </nav>
   <div class="kpi"><div class="v mono">19.8</div><div class="k">TPS</div></div>
   <div class="kpi warn"><div class="v mono">62%</div><div class="k">内存</div></div>
   <div class="kpi"><div class="v mono">45ms</div><div class="k">均延迟</div></div>

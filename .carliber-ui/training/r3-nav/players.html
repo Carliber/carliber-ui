@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>玩家排行榜 · R3</title>
+<style>
+  /* 导航条: 全站统一(三页同一份); 当前页 = mini-tab 语言(文字+2px 底条 #1190FF) */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --panel:#c6c6c6; --slot:#8b8b8b; --out-l:#fff; --out-d:#555;
+          --in-d:#373737; --in-l:#fff; --ink:#404040; --txt-d:#e0e0e0; --focus:#1190FF; }
+  body { background:#1a1a1a; font:14px/1.6 "PingFang SC","Microsoft YaHei",sans-serif;
+         color:var(--ink); padding:clamp(12px,2vw,24px); }
+  .bar { background:var(--panel); border:9px solid;
+         border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
+         padding:0 clamp(12px,2vw,24px); display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .bar h1 { font-size:18px; padding:14px 0; }
+  .nav { display:flex; margin-left:auto; }
+  .nav a { padding:16px 18px 13px; color:var(--ink); text-decoration:none; font-size:14px;
+           border-bottom:3px solid transparent; }
+  .nav a:hover { color:var(--focus); }
+  .nav a[aria-current=page] { color:#0a5bb5; border-bottom-color:var(--focus); }
+  .medal { display:inline-flex; width:21px; height:21px; margin-right:9px; flex:none;
+           border:3px solid var(--in-d); font-size:11px; align-items:center; justify-content:center;
+           color:#fff; font-weight:700; }
+  .m1 { background:#d4a017; } .m2 { background:#9aa0a6; } .m3 { background:#a2714b; }
+  .rank-n { color:#373737; min-width:30px; text-align:right; }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(10px,1.5vw,18px); margin-top:14px; }
+  @media (max-width: 900px) { .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--panel); border:9px solid;
+           border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l); padding:12px; }
+  .panel h2 { font-size:15px; margin-bottom:9px; }
+  .panel h2::before { content:"| "; color:var(--focus); font-weight:700; }
+  .row { display:flex; align-items:center; gap:9px; background:var(--slot);
+         border:3px solid; border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
+         padding:6px 12px; margin-bottom:6px; font-size:13.5px; }
+  .row .name { font-weight:700; flex:1; }
+  .row .v { font-family:Consolas,monospace; color:var(--ink); }
+  footer { margin-top:12px; color:#7a7a7a; font-size:12px; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>玩家排行榜</h1>
+  <nav class="nav">
+    <a href="file:///Users/tongxl/.agents/skills/carliber-ui/.carliber-ui/cockpit-demo/cockpit.html">驾驶舱</a>
+    <a href="../r2-viz/economy.html">经济周报</a>
+    <a href="#" aria-current="page">排行榜</a>
+  </nav>
+</div>
+
+<div class="grid">
+  <div class="panel">
+    <h2>财富榜 · 金币</h2>
+    <div class="row"><span class="medal m1">1</span><span class="name">tongxl</span><span class="v">48,210</span></div>
+    <div class="row"><span class="medal m2">2</span><span class="name">builder_li</span><span class="v">36,905</span></div>
+    <div class="row"><span class="medal m3">3</span><span class="name">miner_2026</span><span class="v">31,447</span></div>
+    <div class="row"><span class="rank-n">4</span><span class="name">Alex_MM</span><span class="v">27,300</span></div>
+    <div class="row"><span class="rank-n">5</span><span class="name">redstone_k</span><span class="v">22,118</span></div>
+    <div class="row"><span class="rank-n">6</span><span class="name">farmer_wang</span><span class="v">18,640</span></div>
+  </div>
+  <div class="panel">
+    <h2>击杀榜 · 本周</h2>
+    <div class="row"><span class="medal m1">1</span><span class="name">ender_P</span><span class="v">240</span></div>
+    <div class="row"><span class="medal m2">2</span><span class="name">Alex_MM</span><span class="v">205</span></div>
+    <div class="row"><span class="medal m3">3</span><span class="name">tongxl</span><span class="v">188</span></div>
+    <div class="row"><span class="rank-n">4</span><span class="name">Steve_CN</span><span class="v">151</span></div>
+    <div class="row"><span class="rank-n">5</span><span class="name">redstone_k</span><span class="v">130</span></div>
+    <div class="row"><span class="rank-n">6</span><span class="name">miner_2026</span><span class="v">124</span></div>
+  </div>
+  <div class="panel">
+    <h2>时长榜 · 本周在线</h2>
+    <div class="row"><span class="medal m1">1</span><span class="name">farmer_wang</span><span class="v">31.5h</span></div>
+    <div class="row"><span class="medal m2">2</span><span class="name">builder_li</span><span class="v">28.2h</span></div>
+    <div class="row"><span class="medal m3">3</span><span class="name">miner_2026</span><span class="v">26.7h</span></div>
+    <div class="row"><span class="rank-n">4</span><span class="name">tongxl</span><span class="v">22.4h</span></div>
+    <div class="row"><span class="rank-n">5</span><span class="name">Alex_MM</span><span class="v">19.9h</span></div>
+    <div class="row"><span class="rank-n">6</span><span class="name">ender_P</span><span class="v">17.3h</span></div>
+  </div>
+</div>
+
+<footer>演示数据快照 · 与驾驶舱/经济周报同一世界观 · carliber-ui R3</footer>
+
+</body>
+</html>
