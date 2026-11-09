@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>经济与战斗周报 · R2</title>
+<style>
+  /* 同世界观: 复用 cockpit 材质语言(顶部条/面板/按钮/竖线标题), 新增仅图表系列色(已登记基线) */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --panel:#c6c6c6; --slot:#8b8b8b; --out-l:#fff; --out-d:#555;
+          --in-d:#373737; --in-l:#fff; --ink:#404040; --txt-d:#e0e0e0;
+          --in-flow:#7fd47f; --out-flow:#c64545; --stock:#f4d03f;
+          --pve:#7fae6a; --pvp:#c64545; --env:#b0b0b0; --kill:#0a5bb5; }
+  body { background:#1a1a1a; font:14px/1.6 "PingFang SC","Microsoft YaHei",sans-serif;
+         color:var(--ink); padding:clamp(12px,2vw,24px); }
+  .mono { font-family:Consolas,"Courier New",monospace; }
+  a { color:#0a5bb5; }
+
+  .bar { background:var(--panel); border:9px solid;
+         border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
+         padding:12px clamp(12px,2vw,24px); display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .bar h1 { font-size:18px; }
+  .bar .cap { color:#373737; font-size:13px; }
+  .spacer { flex:1; }
+  .back { color:#0a5bb5; font-size:13.5px; }
+
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(10px,1.5vw,18px); margin-top:14px; }
+  .full { grid-column:1 / -1; }
+  @media (max-width: 900px) { .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--panel); border:9px solid;
+           border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l); padding:12px; min-width:0; }
+  .panel h2 { font-size:15px; margin-bottom:9px; }
+  .panel h2::before { content:"| "; color:#1190FF; font-weight:700; }
+  .panel .note { font-size:12px; color:#373737; margin-top:6px; }
+
+  /* 图例: 按钮语言, 关闭 = 禁用灰 */
+  .legend { display:flex; gap:9px; flex-wrap:wrap; margin-bottom:9px; }
+  .lg { display:flex; align-items:center; gap:6px; padding:3px 12px; font-size:13px;
+        background:linear-gradient(#6b6b6b,#707070 40%,#565656);
+        border:3px solid #030303; box-shadow:inset 0 3px 0 #aaa;
+        color:var(--txt-d); cursor:pointer; user-select:none; }
+  .lg i { width:12px; height:12px; flex:none; }
+  .lg.off { background:linear-gradient(#4a4a4a,#404040 40%,#3a3a3a); color:#a0a0a0; box-shadow:none; }
+  .lg.off i { background:#6b6b6b !important; }
+
+  svg { display:block; width:100%; height:auto; }
+  .axis-t { font-size:12px; fill:#373737; font-family:Consolas,monospace; }
+  .grid-l { stroke:#b5b5b5; stroke-width:1; }
+  .tip { position:fixed; z-index:9; pointer-events:none; display:none;
+         background:linear-gradient(rgba(80,0,255,.31),rgba(40,0,127,.31));
+         border:3px solid rgba(16,0,16,.9); padding:6px 12px; min-width:150px; }
+  .tip .t1 { color:#fff; font-size:13.5px; }
+  .tip .t2 { color:#d6d6d6; font-size:12.5px; }
+  footer { margin-top:12px; color:#7a7a7a; font-size:12px; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>经济与战斗周报</h1>
+  <span class="cap">模拟 7 天快照 · 数据自洽标注</span>
+  <div class="spacer"></div>
+  <a class="back" href="file:///Users/tongxl/.agents/skills/carliber-ui/.carliber-ui/cockpit-demo/cockpit.html">← 返回驾驶舱</a>
+</div>
+
+<div class="grid">
+  <div class="panel full">
+    <h2>金币流动 · 近 7 天(点击图例开关系列)</h2>
+    <div class="legend" id="lg-line">
+      <span class="lg" data-s="in"><i style="background:var(--in-flow)"></i>流入</span>
+      <span class="lg" data-s="out"><i style="background:var(--out-flow)"></i>流出</span>
+      <span class="lg off" data-s="stock" title="累计量级大, 点击开启"><i style="background:var(--stock)"></i>库存(累计)</span>
+    </div>
+    <svg id="line-svg" viewBox="0 0 760 218" role="img" aria-label="金币流入流出七天折线图"></svg>
+    <div class="note">口径:流入=拍卖行+杂货卖出;流出=商店采购+维修;库存=仓库余额。悬浮查看当日明细。</div>
+  </div>
+
+  <div class="panel">
+    <h2>死亡统计 · 按类型堆叠</h2>
+    <svg id="death-svg" viewBox="0 0 370 250" style="background:var(--slot); border:3px solid; border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d); padding:6px;" role="img" aria-label="七天死亡类型堆叠柱图"></svg>
+    <div class="legend" id="lg-death" style="margin-top:9px;">
+      <span class="lg" style="cursor:default"><i style="background:var(--pve)"></i>PVE(怪物)</span>
+      <span class="lg" style="cursor:default"><i style="background:var(--pvp)"></i>PVP</span>
+      <span class="lg" style="cursor:default"><i style="background:var(--env)"></i>环境(摔落/岩浆)</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>金币净增 vs 玩家击杀 · 双轴对照</h2>
+    <svg id="dual-svg" viewBox="0 0 370 250" role="img" aria-label="金币净增柱与击杀数线双轴图"></svg>
+    <div class="note">左轴:金币净增(柱);右轴:玩家击杀怪(线)。双轴含义:验证"活跃度高的日子经济更活跃"这一假设,两轴时段完全对齐,量级独立。</div>
+  </div>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<footer>模拟 7 天快照(周末活跃高峰,数值自洽) · 接入 rcon 统计后为实时 · carliber-ui R2</footer>
+
+<script>
+const DAYS = ['周一','周二','周三','周四','周五','周六','周日'];
+const DATA = {
+  in:    [3200, 2800, 3500, 4100, 5200, 6800, 5900],
+  out:   [2900, 2600, 3100, 3600, 4400, 5900, 5100],
+  stock: (() => { let b = 12000; return [300,200,400,500,800,900,800].map(d => (b += d, b)); })(),
+  pve:   [12, 10, 14, 11, 16, 22, 19],
+  pvp:   [3, 2, 5, 4, 7, 12, 9],
+  env:   [8, 6, 9, 7, 11, 14, 12],
+  kill:  [140, 120, 155, 130, 180, 240, 210],
+};
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs, parent) => {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  parent.appendChild(e); return e;
+};
+const tip = document.getElementById('tip');
+const showTip = (x, y, html) => { tip.innerHTML = html; tip.style.display = 'block';
+  tip.style.left = Math.min(x + 14, innerWidth - 190) + 'px'; tip.style.top = (y + 14) + 'px'; };
+const hideTip = () => tip.style.display = 'none';
+
+/* ===== 图1: 多系列折线 + 图例显隐 + 联动 ===== */
+const LINE = { in: 'var(--in-flow)', out: 'var(--out-flow)', stock: 'var(--stock)' };
+const LNAMES = { in: '流入', out: '流出', stock: '库存' };
+const hidden = { in: false, out: false, stock: true }; // 库存(累计量)与流量(日增量)量级差 3×+, 默认关避免压扁流量
+const lineSvg = document.getElementById('line-svg');
+const LX = 46, LW = 700, LY = 14, LH = 158; // 绘图区(压缩后三图进首屏)
+
+function drawLine() {
+  lineSvg.innerHTML = '';
+  const vis = Object.keys(hidden).filter(k => !hidden[k]);
+  const vals = vis.flatMap(k => DATA[k]); // 一维展开, 否则 Math.max(...二维) = NaN
+  const max = Math.max(...vals, 1) * 1.12;
+  // 网格与左轴刻度(按可见系列重算 → 联动)
+  for (let g = 0; g <= 4; g++) {
+    const y = LY + LH - (LH / 4) * g;
+    el('line', { x1: LX, y1: y, x2: LX + LW, y2: y, class: 'grid-l' }, lineSvg);
+    el('text', { x: LX - 6, y: y + 4, 'text-anchor': 'end', class: 'axis-t' }, lineSvg)
+      .textContent = Math.round(max / 4 * g);
+  }
+  DAYS.forEach((d, i) => {
+    el('text', { x: LX + (LW / 6) * i, y: LY + LH + 22, 'text-anchor': 'middle', class: 'axis-t' }, lineSvg)
+      .textContent = d;
+  });
+  // 系列: 方点 + 折线
+  vis.forEach(k => {
+    const pts = DATA[k].map((v, i) => [LX + (LW / 6) * i, LY + LH - (v / max) * LH]);
+    el('polyline', { points: pts.map(p => p.join(',')).join(' '), fill: 'none',
+      stroke: LINE[k], 'stroke-width': 3 }, lineSvg);
+    pts.forEach((p, i) => {
+      el('rect', { x: p[0] - 4, y: p[1] - 4, width: 8, height: 8, fill: LINE[k],
+        stroke: '#030303', 'stroke-width': 1 }, lineSvg);
+      // 命中区
+      const hit = el('rect', { x: p[0] - LW / 12, y: LY, width: LW / 6, height: LH + 8,
+        fill: 'transparent' }, lineSvg);
+      hit.addEventListener('mousemove', ev => {
+        const rows = vis.map(k2 => `<div class="t2">${LNAMES[k2]}: ${DATA[k2][i].toLocaleString()}</div>`).join('');
+        showTip(ev.clientX, ev.clientY, `<div class="t1">${DAYS[i]}</div>${rows}`);
+      });
+      hit.addEventListener('mouseleave', hideTip);
+    });
+  });
+}
+document.getElementById('lg-line').addEventListener('click', e => {
+  const b = e.target.closest('.lg'); if (!b) return;
+  const s = b.dataset.s;
+  if (Object.values(hidden).filter(Boolean).length >= 2 && !hidden[s]) return; // 至少留一条
+  hidden[s] = !hidden[s];
+  b.classList.toggle('off', hidden[s]);
+  drawLine();
+});
+drawLine();
+
+/* ===== 图2: 死亡堆叠柱(段间白缝) ===== */
+const DKEYS = [['pve', 'var(--pve)', 'PVE'], ['pvp', 'var(--pvp)', 'PVP'], ['env', 'var(--env)', '环境']];
+const deathSvg = document.getElementById('death-svg');
+const DW = 370, DH = 250, DX = 30, DTop = 20, DGr = DH - 42;
+const dTotals = DAYS.map((_, i) => DATA.pve[i] + DATA.pvp[i] + DATA.env[i]);
+const dMax = Math.max(...dTotals) * 1.15;
+DAYS.forEach((d, i) => {
+  const bw = 30, bx = DX + 10 + i * ((DW - 30) / 7);
+  let yAcc = DGr;
+  DKEYS.forEach(([k, color, name]) => {
+    const h = (DATA[k][i] / dMax) * (DGr - DTop);
+    yAcc -= h;
+    const seg = el('rect', { x: bx, y: yAcc, width: bw, height: Math.max(h - 2, 0),
+      fill: color, stroke: '#ffffff', 'stroke-width': 2 }, deathSvg);
+    seg.addEventListener('mousemove', ev => showTip(ev.clientX, ev.clientY,
+      `<div class="t1">${d} · ${name}</div><div class="t2">${DATA[k][i]} 次死亡</div>`));
+    seg.addEventListener('mouseleave', hideTip);
+  });
+  el('text', { x: bx + bw / 2, y: DH - 14, 'text-anchor': 'middle', class: 'axis-t' }, deathSvg)
+    .textContent = d.replace('周', '');
+  el('text', { x: bx + bw / 2, y: yAcc - 6, 'text-anchor': 'middle', class: 'axis-t' }, deathSvg)
+    .textContent = dTotals[i];
+});
+
+/* ===== 图3: 双轴(左柱净增 / 右线击杀) ===== */
+const dualSvg = document.getElementById('dual-svg');
+const UX = 40, UW = 300, UY = 20, UH = 185, bw = 22; // bw 在双轴顶层定义(柱与线共用)
+const netMax = Math.max(...[300,200,400,500,800,900,800]) * 1.15;
+const killMax = Math.max(...DATA.kill) * 1.15;
+// 左轴刻度
+for (let g = 0; g <= 4; g++) {
+  const y = UY + UH - (UH / 4) * g;
+  el('line', { x1: UX, y1: y, x2: UX + UW, y2: y, class: 'grid-l' }, dualSvg);
+  el('text', { x: UX - 5, y: y + 4, 'text-anchor': 'end', class: 'axis-t' }, dualSvg)
+    .textContent = Math.round(netMax / 4 * g);
+  el('text', { x: UX + UW + 5, y: y + 4, class: 'axis-t' }, dualSvg)
+    .textContent = Math.round(killMax / 4 * g);
+}
+// 柱(净增)
+[300,200,400,500,800,900,800].forEach((v, i) => {
+  const bx = UX + 8 + i * (UW / 7), h = (v / netMax) * UH;
+  const r = el('rect', { x: bx, y: UY + UH - h, width: bw, height: h, fill: 'var(--stock)',
+    stroke: '#030303', 'stroke-width': 1 }, dualSvg);
+  r.addEventListener('mousemove', ev => showTip(ev.clientX, ev.clientY,
+    `<div class="t1">${DAYS[i]}</div><div class="t2">净增: ${v} 金币(左轴)</div><div class="t2">击杀: ${DATA.kill[i]}(右轴)</div>`));
+  r.addEventListener('mouseleave', hideTip);
+});
+// 线(击杀, 方点)
+const kpts = DATA.kill.map((v, i) => [UX + 8 + (UW / 7) * i + bw / 2, UY + UH - (v / killMax) * UH]);
+el('polyline', { points: kpts.map(p => p.join(',')).join(' '), fill: 'none',
+  stroke: 'var(--kill)', 'stroke-width': 3 }, dualSvg);
+kpts.forEach(p => el('rect', { x: p[0] - 4, y: p[1] - 4, width: 8, height: 8,
+  fill: 'var(--kill)', stroke: '#030303', 'stroke-width': 1 }, dualSvg));
+// 轴标题
+el('text', { x: UX - 5, y: 12, 'text-anchor': 'end', class: 'axis-t' }, dualSvg).textContent = '金币';
+el('text', { x: UX + UW + 5, y: 12, class: 'axis-t' }, dualSvg).textContent = '击杀';
+DAYS.forEach((d, i) => {
+  el('text', { x: UX + 8 + (UW / 7) * i + bw / 2, y: DH - 8, 'text-anchor': 'middle', class: 'axis-t' }, dualSvg)
+    .textContent = d.replace('周', '');
+});
+</script>
+</body>
+</html>
