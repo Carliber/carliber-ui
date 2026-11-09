@@ -2,6 +2,13 @@
 
 本技能 fork 自 oil-ui 0.33.2(MIT,致谢 oil-oil),此后独立演进。
 
+## 1.0.2(2026-11-09)
+
+- 标点体例统一为英文符号:SKILL.md + 22 篇 references 共 2656 处全角→半角(逐位校验零内容变化,代码块保留)
+- tools.md 补 CHROME_PATH 用法:无系统浏览器时指向 Playwright 浏览器可执行文件(实战校准发现)
+- SKILL.md 步骤 3 补 lint 豁免:复刻/还原类页面按还原优先原则豁免对比度提示(实战校准发现)
+- docs/ 新增项目主页(GitHub Pages,https://carliber.github.io/carliber-ui/)
+
 ## 1.0.1(2026-11-09)
 
 - minecraft 基线新增「版本差异」节:1.7.10/1.12.2/1.20.1 官方 client.jar 解包实证——GUI 贴图三版本同规格(widgets/icons/容器全 256×256),字体 1.20.1 起 JSON provider 化
