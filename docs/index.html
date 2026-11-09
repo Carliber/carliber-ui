@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>carliber-ui · 给 AI Agent 的界面设计技能</title>
+<style>
+  :root {
+    --ink: #24292f; --body: #3d434b; --muted: #6b7280;
+    --accent: #2e6e57; --accent-soft: #e7f0ec; --accent-line: #bcd6cb;
+    --canvas: #f7f7f4; --card: #ffffff; --line: #e4e6e1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--canvas); color: var(--body);
+         font: 16px/1.75 "PingFang SC", "Microsoft YaHei", sans-serif; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* hero */
+  header { padding: 88px 0 64px; }
+  .kicker { font-size: 14px; color: var(--accent); letter-spacing: 0; margin-bottom: 12px; }
+  h1 { font-size: 44px; line-height: 1.25; color: var(--ink); font-weight: 700; margin-bottom: 16px; }
+  .lead { font-size: 19px; max-width: 34em; }
+  .actions { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 10px 22px; border-radius: 6px; font-size: 15px; }
+  .btn-main { background: var(--accent); color: #fff; }
+  .btn-main:hover { background: #255844; text-decoration: none; }
+  .btn-ghost { border: 1px solid var(--accent-line); color: var(--accent); background: var(--card); }
+  .btn-ghost:hover { border-color: var(--accent); text-decoration: none; }
+
+  /* 主流程条 */
+  .flow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 40px; }
+  .flow span { background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+               padding: 6px 14px; font-size: 14px; color: var(--ink); }
+  .flow span b { color: var(--accent); font-weight: 600; margin-right: 4px; }
+
+  /* 方法论卡 */
+  section { padding: 24px 0; }
+  h2 { font-size: 26px; color: var(--ink); margin-bottom: 20px; }
+  h2 small { font-size: 14px; color: var(--muted); font-weight: 400; margin-left: 10px; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 24px; }
+  .card h3 { font-size: 17px; color: var(--ink); margin-bottom: 12px; }
+  .card p { font-size: 14.5px; color: var(--body); }
+  .dims { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .dims span { background: var(--accent-soft); color: var(--accent); border-radius: 5px;
+               padding: 3px 10px; font-size: 13px; }
+  .loop { margin-top: 14px; font-size: 14.5px; color: var(--body); }
+  .loop b { color: var(--ink); }
+
+  /* 基线 */
+  .baseline { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 24px; }
+  .shot { margin-top: 18px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .shot img { display: block; width: 100%; height: 420px; object-fit: cover; object-position: top; image-rendering: auto; }
+  .shot figcaption { font-size: 13px; color: var(--muted); padding: 10px 14px; background: var(--canvas); }
+
+  footer { margin-top: 56px; padding: 32px 0 48px; border-top: 1px solid var(--line);
+           font-size: 14px; color: var(--muted); }
+
+  @media (max-width: 680px) {
+    h1 { font-size: 32px; }
+    .cards { grid-template-columns: 1fr; }
+    header { padding-top: 56px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="kicker">Agent Skill · v1.0.1</div>
+  <h1>carliber-ui</h1>
+  <p class="lead">给 AI Agent 的界面设计纪律:先锁定每页要赢的主要矛盾,再收敛方向,用 8 维质疑矩阵与多轮对比打磨到能交付。</p>
+  <div class="actions">
+    <a class="btn btn-main" href="https://github.com/Carliber/carliber-ui">GitHub 仓库</a>
+    <a class="btn btn-ghost" href="#baseline">看复刻演示</a>
+  </div>
+  <div class="flow">
+    <span><b>1</b>判定页面类型</span>
+    <span><b>2</b>锁定主要矛盾</span>
+    <span><b>3</b>收敛一个方向</span>
+    <span><b>4</b>实现并取证</span>
+    <span><b>5</b>评审后交付</span>
+  </div>
+</header>
+
+<section class="wrap" id="method">
+  <h2>两件核心武器 <small>全流程只有一次确认,其余交给纪律</small></h2>
+  <div class="cards">
+    <div class="card">
+      <h3>8 维质疑矩阵</h3>
+      <p>选方向时打分、确认前找风险、交付前终检,同一组维度贯穿始终;❌ 必修、⚠️ 豁免须写明理由。</p>
+      <div class="dims">
+        <span>层级</span><span>差异化</span><span>任务</span><span>可访问性</span>
+        <span>密度</span><span>真实性</span><span>一致性</span><span>边界</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>多轮对比收敛</h3>
+      <p>打磨到极致的任务进入评审—修正循环,每轮与上一版并排对比,直到满足停止条件。</p>
+      <div class="loop"><b>每轮三问:</b>变好了什么 · 变差了什么 · 下一轮只修什么</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="baseline">
+  <h2>实测设计基线 <small>不是模板,是拿实物校准过的规格</small></h2>
+  <div class="baseline">
+    <p>Minecraft 1.7.10 原版 GUI:解包官方 client.jar 实证三个版本的贴图规格完全一致,像素网格、组件尺寸、颜色令牌逐项标注来源;HTML 原型按 1 GUI px = 3 CSS px 复刻,配合三份版本映射表可直接翻译成 Java GUI 代码。</p>
+    <figure class="shot">
+      <img src="assets/mcgui-shot.png" alt="Minecraft 原版 GUI 组件复刻:按钮三态、176×166 容器、槽位、tooltip、HUD">
+      <figcaption>mcgui.html 规格文档实拍:标准按钮 200×20 · 容器 176×166 · 槽 18×18 · tooltip 渐变</figcaption>
+    </figure>
+  </div>
+</section>
+
+<footer class="wrap">
+  MIT · fork 自 oil-ui 0.33.2 并独立演进 · 22 篇细则 / 2 份实测基线 / 截图工具链带 7 条可读性与动效检查
+</footer>
+
+</body>
+</html>
