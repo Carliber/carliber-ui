@@ -2,6 +2,10 @@
 
 本技能 fork 自 oil-ui 0.33.2(MIT,致谢 oil-oil),此后独立演进。
 
+## 1.0.24(2026-11-09)
+
+- 四页内联 SVG favicon;og:url/og:type/twitter:card 补齐(og:image 404 为 CDN 缓存误报,复验 200)
+
 ## 1.0.23(2026-11-09)
 
 - R38 同步漂移防线规则化(workdir.md):易变字段不复制值,只引用唯一源或常青文案;W9 两次复发后的机制消除法沉淀
