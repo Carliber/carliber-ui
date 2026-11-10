@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>驾驶舱状态机总览 · R31</title>
+<style>
+  /* 同 cockpit 材质语言; 本页 = 状态机规格文档(五态并置) */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --panel:#c6c6c6; --slot:#8b8b8b; --out-l:#fff; --out-d:#555;
+          --in-d:#373737; --in-l:#fff; --ink:#404040; --txt-d:#e0e0e0;
+          --ok:#7fd47f; --warn:#b8860b; --err:#c64545; }
+  body { background:#1a1a1a; font:14px/1.6 "PingFang SC","Microsoft YaHei",sans-serif;
+         color:var(--ink); padding:clamp(12px,2vw,24px); }
+  .bar { background:var(--panel); border:9px solid;
+         border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
+         padding:0 clamp(12px,2vw,24px); display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .bar h1 { font-size:18px; }
+  .nav { display:flex; margin-left:auto; }
+  .nav a { padding:16px 18px 13px; color:var(--ink); text-decoration:none; font-size:14px;
+           border-bottom:3px solid transparent; }
+  .nav a:hover { color:#1190FF; }
+  .nav a[aria-current=page] { color:#0a5bb5; border-bottom-color:#1190FF; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(10px,1.5vw,18px); margin-top:14px; }
+  @media (max-width: 900px) { .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--panel); border:9px solid;
+           border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l); padding:12px; min-width:0; }
+  .panel h2 { font-size:15px; margin-bottom:9px; }
+  .panel h2::before { content:"| "; color:#1190FF; font-weight:700; }
+  .state-tag { display:inline-block; padding:2px 10px; font-size:12px; margin-bottom:9px;
+               background:var(--slot); border:3px solid var(--in-d); color:var(--ink); }
+  .mini { height:120px; background:var(--slot); border:3px solid;
+          border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
+          display:flex; flex-direction:column; align-items:center; justify-content:center; gap:9px; }
+  .mini .prog { width:60%; height:21px; background:#4a4a4a;
+                border:3px solid; border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
+                position:relative; overflow:hidden; }
+  .mini .prog .fill { position:absolute; left:0; top:0; bottom:0; width:64%; background:var(--ok); }
+  .mini .t { font-family:Consolas,monospace; font-size:13px; }
+  .mini .dimt { font-size:12px; color:#373737; }
+  .emptybox { width:100%; padding:15px 12px; text-align:center; color:#373737; font-size:13px; }
+  .offline-demo { opacity:.45; }
+  .offmini { background:var(--panel); border:3px solid; display:flex; align-items:center;
+             gap:12px; padding:9px 12px; margin-bottom:9px; }
+  .offmini .sig { width:15px; height:15px; background:var(--err); flex:none; }
+  .offmini .m { font-size:13px; }
+  .kpirow { display:flex; gap:9px; }
+  .kpi { flex:1; background:var(--slot); border:3px solid var(--in-d);
+         padding:6px; text-align:center; font-family:Consolas,monospace; font-size:13px; }
+  .kpi.warn { border-color:var(--warn); } .kpi.err { border-color:var(--err); }
+  .legend2 { font-size:12.5px; color:#373737; margin-top:9px; }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>驾驶舱状态机总览</h1>
+  <nav class="nav">
+    <a href="cockpit.html">驾驶舱</a>
+    <a href="../r2-viz/economy.html">经济周报</a>
+    <a href="../r3-nav/players.html">排行榜</a>
+    <a href="../../training/r1-form/form.html">白名单</a>
+  </nav>
+</div>
+
+<div class="grid">
+  <div class="panel">
+    <span class="state-tag">STATE 1 · LOADING</span>
+    <h2>加载中(超时 15s → 转断线)</h2>
+    <div class="mini">
+      <div class="prog"><div class="fill"></div></div>
+      <div class="t">Building terrain… 64%</div>
+      <div class="dimt">拉取在线人数 / TPS / 日志缓存</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <span class="state-tag">STATE 2 · NORMAL</span>
+    <h2>正常(数据实时语义)</h2>
+    <div class="kpirow">
+      <div class="kpi">19.8</div>
+      <div class="kpi warn">62%</div>
+      <div class="kpi err">2</div>
+    </div>
+    <div class="legend2">阈值语义边框:黄=注意 · 红=需处理;数据区全透明度</div>
+  </div>
+
+  <div class="panel">
+    <span class="state-tag">STATE 3 · EMPTY</span>
+    <h2>空数据(在线 0)</h2>
+    <div class="mini">
+      <div class="emptybox">服务器空闲中,猫在后台睡觉 · 上次满员 3 小时前</div>
+    </div>
+    <div class="legend2">空态给原因与时间线索,不给空白坐标</div>
+  </div>
+
+  <div class="panel">
+    <span class="state-tag">STATE 4 · OFFLINE</span>
+    <h2>断线(降透明禁交互)</h2>
+    <div class="offmini"><span class="sig"></span><span class="m">与服务器失去连接,正在重连…(第 2 次)</span></div>
+    <div class="mini offline-demo">
+      <div class="t">19.8 · 62% · 45ms</div>
+      <div class="dimt">数据降透明 = 非实时,禁点击</div>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="panel full" style="grid-column:1/-1;">
+    <span class="state-tag">STATE 5 · EXTREME</span>
+    <h2>极端值(报数据源错误,不直接采信)</h2>
+    <div class="kpirow">
+      <div class="kpi err">0.0</div>
+      <div class="kpi err">99999999%</div>
+      <div class="kpi err">9999ms</div>
+    </div>
+    <div class="legend2">全红边框 = 数据源可疑:值域校验失败时 UI 标可疑并提示排查,不静默展示荒谬值</div>
+  </div>
+</div>
+
+</body>
+</html>
