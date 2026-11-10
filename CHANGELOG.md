@@ -2,10 +2,10 @@
 
 本技能 fork 自 oil-ui 0.33.2(MIT,致谢 oil-oil),此后独立演进。
 
-## 1.0.22(2026-11-09)
+## 1.0.23(2026-11-09)
 
-- tabwalk.mjs 可移植化:findChrome/CHROME_PATH + PLAYWRIGHT_PATH + 相对路径 resolve(修原 file:// 拼 bug)
-- workdir.md 补 tabwalk 依赖说明;主页全链接验证全绿
+- R38 同步漂移防线规则化(workdir.md):易变字段不复制值,只引用唯一源或常青文案;W9 两次复发后的机制消除法沉淀
+- R35 规则一致性通读零矛盾;R36 断链重跑 40 文件 0 断链;R37 README 循环表改阶段式常青
 
 ## 1.0.22(2026-11-09)
 
