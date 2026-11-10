@@ -60,8 +60,8 @@
            border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
            padding:6px; }
   .chart i { flex:1; background:var(--ok); min-height:3px; }
-  .chart i.hot { background:#f4d03f; }
-  .chart i.dead { background:var(--err); }
+  .chart i.hot { background:#f4d03f; border-top:6px solid #030303; }  /* 色盲第二通道: 顶帽 */
+  .chart i.dead { background:var(--err); border-top:6px double var(--err); }
   .axis { display:flex; justify-content:space-between; font-size:12px; color:#565656; margin-top:6px; }
 
   /* 玩家表: 槽位行(内凹), 头像 27px=9GUI 槽感 */
