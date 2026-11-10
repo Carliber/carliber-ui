@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>carliber-ui 设计蓝图</title>
+<style>
+  /* 工程蓝图美学: 蓝底白线稿。隐喻纪律: 一切元素皆为图纸语言。 */
+  :root { --bp:#16324f; --bp-d:#0f2438; --ln:#dfe9f5; --ln-2:#8fb0cf; --dim:#aac3e0;
+          --mark:#ffd54d; --ok:#9fd4a8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bp-d); color:var(--ln);
+         font:15px/1.8 "PingFang SC","Microsoft YaHei",sans-serif;
+         display:flex; justify-content:center; padding:clamp(14px,3vw,40px); }
+  .sheet { width:min(960px,96vw); background:var(--bp); border:2px solid var(--ln);
+           outline:1px solid var(--ln-2); outline-offset:6px; padding:clamp(20px,4vw,48px); position:relative; }
+  /* 图框角标 */
+  .sheet::before { content:"A1 · 1:1"; position:absolute; top:10px; right:14px;
+                   font:12px/1 Consolas,monospace; color:var(--dim); letter-spacing:1px; }
+
+  /* 图签(标题栏) */
+  .titleblock { border:2px solid var(--ln); display:grid;
+                grid-template-columns:2.2fr 1fr 1fr 1fr; margin-bottom:14px; }
+  .titleblock > div { padding:10px 14px; border-right:1px solid var(--ln-2); }
+  .titleblock > div:last-child { border-right:none; }
+  .titleblock .k { font-size:11px; color:var(--dim); letter-spacing:2px; }
+  .titleblock .v { font-size:15px; }
+  .titleblock .name { font-size:clamp(18px,3vw,24px); letter-spacing:2px; }
+
+  h2 { font-size:16px; margin:38px 0 16px; letter-spacing:1px; }
+  h2::before { content:"◆ "; color:var(--mark); }
+  .note { font-size:12.5px; color:var(--dim); margin-top:8px; }
+
+  /* 六步流程环: SVG 线稿 */
+  svg { display:block; width:100%; height:auto; }
+  text { fill:var(--ln); font-family:inherit; }
+  .dim-t { fill:var(--dim); font-size:11px; }
+  .mark-t { fill:var(--mark); }
+
+  /* 八维矩阵: 图纸表格 */
+  .bom { width:100%; border-collapse:collapse; font-size:13.5px; }
+  .bom th, .bom td { border:1px solid var(--ln-2); padding:8px 12px; text-align:left; }
+  .bom th { color:var(--mark); font-weight:400; letter-spacing:1px; font-size:12.5px; }
+  .bom .no { color:var(--dim); font-family:Consolas,monospace; }
+
+  /* 循环: 修改版本标记 */
+  .rev { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; font-size:13px; }
+  .rev div { border:1px dashed var(--ln-2); padding:8px 12px; }
+  .rev b { color:var(--mark); font-weight:400; font-family:Consolas,monospace; }
+
+  /* 标注装饰线 */
+  .callout { display:flex; align-items:center; gap:12px; margin:6px 0; font-size:13px; color:var(--dim); }
+  .callout::before { content:""; width:56px; height:1px; background:var(--ln-2); }
+
+  footer { margin-top:34px; padding-top:12px; border-top:1px solid var(--ln-2);
+           font-size:12px; color:var(--dim); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="titleblock">
+    <div><div class="k">PROJECT</div><div class="v name">CARLIBER-UI 设计蓝图</div></div>
+    <div><div class="k">SHEET</div><div class="v">1 / 1</div></div>
+    <div><div class="k">REV</div><div class="v">1.0.8</div></div>
+    <div><div class="k">SCALE</div><div class="v">方法论 1:1</div></div>
+  </div>
+
+  <h2>① 主流程 · 六步闭环</h2>
+  <svg viewBox="0 0 880 210" role="img" aria-label="主流程六步闭环线稿">
+    <defs><marker id="arw" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#dfe9f5"/></marker></defs>
+    <g font-size="13">
+      <rect x="10"  y="80" width="120" height="50" fill="none" stroke="#dfe9f5" stroke-width="1.5"/>
+      <text x="70"  y="109" text-anchor="middle">判定类型</text>
+      <rect x="155" y="80" width="120" height="50" fill="none" stroke="#dfe9f5" stroke-width="1.5"/>
+      <text x="215" y="109" text-anchor="middle">锁定矛盾</text>
+      <rect x="300" y="80" width="120" height="50" fill="none" stroke="#dfe9f5" stroke-width="1.5"/>
+      <text x="360" y="109" text-anchor="middle">收敛方向</text>
+      <rect x="445" y="80" width="120" height="50" fill="none" stroke="#dfe9f5" stroke-width="1.5"/>
+      <text x="505" y="109" text-anchor="middle">实现取证</text>
+      <rect x="590" y="80" width="120" height="50" fill="none" stroke="#dfe9f5" stroke-width="1.5"/>
+      <text x="650" y="109" text-anchor="middle">独立评审</text>
+      <rect x="735" y="80" width="120" height="50" fill="none" stroke="#ffd54d" stroke-width="1.5"/>
+      <text x="795" y="109" text-anchor="middle" class="mark-t">交付</text>
+    </g>
+    <g stroke="#dfe9f5" stroke-width="1.2">
+      <line x1="130" y1="105" x2="152" y2="105" marker-end="url(#arw)"/>
+      <line x1="275" y1="105" x2="297" y2="105" marker-end="url(#arw)"/>
+      <line x1="420" y1="105" x2="442" y2="105" marker-end="url(#arw)"/>
+      <line x1="565" y1="105" x2="587" y2="105" marker-end="url(#arw)"/>
+      <line x1="710" y1="105" x2="732" y2="105" marker-end="url(#arw)"/>
+    </g>
+    <text x="440" y="172" text-anchor="middle" class="dim-t">全流程只确认一次 · 每步留下可查产物</text>
+    <line x1="60" y1="152" x2="820" y2="152" stroke="#8fb0cf" stroke-width="0.8" stroke-dasharray="5 4"/>
+    <text x="80" y="168" class="dim-t">未过门槛不后移</text>
+  </svg>
+
+  <h2>② 八维质疑矩阵 · 雷达展开</h2>
+  <svg viewBox="0 0 880 230" role="img" aria-label="八维质疑矩阵八分格">
+    <g transform="translate(170,115)">
+      <polygon points="0,-85 60,-60 85,0 60,60 0,85 -60,60 -85,0 -60,-60"
+               fill="none" stroke="#dfe9f5" stroke-width="1.2"/>
+      <g stroke="#8fb0cf" stroke-width="0.7">
+        <line x1="0" y1="-85" x2="0" y2="85"/><line x1="-85" y1="0" x2="85" y2="0"/>
+        <line x1="-60" y1="-60" x2="60" y2="60"/><line x1="-60" y1="60" x2="60" y2="-60"/>
+      </g>
+      <g font-size="12" text-anchor="middle">
+        <text x="0" y="-94">层级主角</text><text x="102" y="-66">差异化</text>
+        <text x="118" y="6">任务步数</text><text x="100" y="76">可访问性</text>
+        <text x="0" y="106">密度减法</text><text x="-100" y="76">真实性</text>
+        <text x="-122" y="6">一致性</text><text x="-104" y="-66">边界状态</text>
+      </g>
+      <text x="0" y="4" text-anchor="middle" class="mark-t" font-size="13">每维 0/1/2</text>
+      <text x="0" y="24" text-anchor="middle" class="dim-t">❌必修 ⚠️豁免记录</text>
+    </g>
+    <g transform="translate(300,40)" font-size="13.5">
+      <text x="0" y="0">选候选 → 打分定推荐</text>
+      <text x="0" y="30">方向确认前 → 答不上的维度即风险点</text>
+      <text x="0" y="60">交付前 → ❌ 修完或写进「哪些没做」</text>
+      <text x="0" y="105" class="dim-t">节点: 同一组维度, 三个时机各问一遍。</text>
+    </g>
+  </svg>
+
+  <h2>③ 训练循环 · 修改版本记录</h2>
+  <div class="rev">
+    <div><b>R1</b> 表单六态 → 基线补控件规格与浅底色谱</div>
+    <div><b>R2</b> 图表深水 → 量级兼容 3× / 系列色对底对比</div>
+    <div><b>R3</b> 多页导航 → tabs-active 高亮配方</div>
+    <div><b>R4</b> 滚动叙事 → 大标题行高 ≥1.45</div>
+    <div><b>R5</b> 移动复验 → viewport 自检入规</div>
+    <div><b>NEXT</b> W5 评审对抗性 · W7(本页即答)</div>
+  </div>
+
+  <h2>④ 基线 BOM · 材料清单(节选)</h2>
+  <table class="bom">
+    <tr><th>ITEM</th><th>材料</th><th>实测值</th><th>出处</th></tr>
+    <tr><td class="no">01</td><td>MC 面板 / 槽位</td><td>#c6c6c6 外凸 · #8b8b8b 内凹 · 18px 网格</td><td>官方 client.jar 解包</td></tr>
+    <tr><td class="no">02</td><td>Miracle 主色</td><td>#2779aa · 白卡三件套</td><td>.20 部署皮肤 CSS</td></tr>
+    <tr><td class="no">03</td><td>MC 浅底文本色谱</td><td>4 档(正文/次要/错误/链接)</td><td>R1 表单实战实测</td></tr>
+    <tr><td class="no">04</td><td>视口选型表</td><td>桌面 5 档 · 平板 3 档 · 手机 4 档</td><td>R6 前置循环沉淀</td></tr>
+  </table>
+  <div class="callout">全部色值标注出处,无据不取值 —— 引用规则 v1.0.3 起生效</div>
+
+  <footer>
+    <span>DRAWN BY carliber-ui · CHECKED BY 看图评审 · 五轮循环归档在案</span>
+    <span>ui.oiloil.org 无关 · 本图自指本技能</span>
+  </footer>
+</div>
+</body>
+</html>

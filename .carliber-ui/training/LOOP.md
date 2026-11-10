@@ -20,6 +20,15 @@
 
 ## 循环日志(按轮次)
 
+### R22 · showcase 第二档案 ✅
+
+- 蓝图概念页入库 docs/blueprint/(Pages 可达)+showcase 增第二档案节与 R10-R20 循环续报
+- R21:全仓 md 相对链接断链 0;cockpit 加导航后首屏回归 lint/issues 零
+
+### R21 · 全仓链接+首屏回归 ✅
+
+- 断链 0;首屏回归通过
+
 ### R20 · 色盲模拟评审 ✅(v1.0.16)
 - 发现:绿色盲模拟下黄柱/绿柱区分度下降 → hot 柱加黑顶帽第二通道(不依赖模拟验证即生效)
 - 方法沉淀:data-viz 补 feColorMatrix 滤镜参数;**本环境 Chromium headless 根级 filter 不生效**(html/body/层级三试),模拟截图记 pending 需真实浏览器复验

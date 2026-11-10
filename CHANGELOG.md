@@ -2,6 +2,11 @@
 
 本技能 fork 自 oil-ui 0.33.2(MIT,致谢 oil-oil),此后独立演进。
 
+## 1.0.17(2026-11-09)
+
+- R21 全仓链接断链检查(0 断链)+cockpit 首屏回归(导航加入后 lint/issues 仍零)
+- R22 showcase 增第二档案:设计蓝图(概念页+原型入库 docs/blueprint/)+R10-R20 循环续报节
+
 ## 1.0.16(2026-11-09)
 
 - R20 色盲模拟评审:hot 柱加黑顶帽第二通道;data-viz 补色盲滤镜验证方法(本环境 headless 根级 filter 不生效,记 pending)
