@@ -2,6 +2,13 @@
 
 本技能 fork 自 oil-ui 0.33.2(MIT,致谢 oil-oil),此后独立演进。
 
+## 1.0.28(2026-11-10)
+
+- shoot.mjs lint 扩充:halfStepFont(半档字号)+gridSpacing(design-grid=3 时间距网格校验),验证无误报
+- 蓝图过时字段刷新(REV 常青/循环记录补齐)+自身漏网半档 4 处归档
+- R55 MC HUD 实证:1.7.10 icons.png 像素扫描(精灵行带/经验条尺寸),mcgui HUD 节换实证标注,xpbar 尺寸修正 546×15
+- R56 外部基线首验(stripe):流程跑通,仿写版口径/中文回退/布局分工三点坑入 challenge
+
 ## 1.0.27(2026-11-09)
 
 - R50 references/self-evolution.md:训练循环方法论(弱点池机制/归因三类修法/纪律/停止条件);R49 SKILL 正文自审钩子完整

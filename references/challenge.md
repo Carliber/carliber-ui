@@ -35,7 +35,7 @@
 2. **内置基线**:
    - Miracle 平台项目(自写页与 miniui 控件共存)→ [assets/design-md/miracle/DESIGN.md](../assets/design-md/miracle/DESIGN.md),含实测 tokens 与平台约束,此类项目必读。
    - Minecraft 1.7.10 原版 GUI / Mod GUI 原型 → [assets/design-md/minecraft/DESIGN.md](../assets/design-md/minecraft/DESIGN.md) + [mcgui.html](../assets/design-md/minecraft/mcgui.html)(组件规格文档,CSS÷3=游戏 GUI px,可直接完整复刻进游戏)。
-3. **外部基线**:用户点名参考某知名产品整体风格(apple、stripe 等)时,从 [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) 取对应 DESIGN.md 放进任务目录当基线。
+3. **外部基线**:用户点名参考某知名产品整体风格(apple、stripe 等)时,从 [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) 取对应 DESIGN.md 放进任务目录当基线。实际路径:`design-md/{产品名}/DESIGN.md`(如 `design-md/stripe/DESIGN.md`);getdesign.md 站点是 SPA 壳,直接抓 GitHub raw。R56 首验(stripe):基线 token(colors/typography)可直接支撑实现,跳过方向探索成立;两点注意——基线可能是仿写版(如 Stripi-Inspired),向用户声明口径;英文基线字体无中文,细字重(display 300)回退 PingFang 后变细,中文标题验证可读性,必要时回退到 400;布局常识(等高卡按钮贴底等)基线不管,照技能自身规则兜底。
 
 后两条都不是默认动作:没有对应场景或用户没点名时不引入。
 
