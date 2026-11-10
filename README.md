@@ -30,7 +30,7 @@ AI Agent 的界面设计技能。主流程:**判定页面类型 → 锁定主要
 ## 结构
 
 - `SKILL.md` — 主流程与场景路由
-- `references/` — 22 篇细则:设计方向、视觉语言、素材、动效、评审协议、中文排版、数据可视化、质疑矩阵、多轮收敛等
+- `references/` — 23 篇细则:设计方向、视觉语言、素材、动效、评审协议、中文排版、数据可视化、质疑矩阵、多轮收敛、自进化方法论等
 - `assets/design-md/` — 设计基线(minecraft 含 DESIGN.md / mcgui.html / translate.md;miracle 含实测皮肤 CSS)
 - `scripts/` — 截图(shoot)、素材检索(curate-media)、对比页生成(build_explorer)、图片处理、测量
 - `tests/` — 脚本单测

@@ -2,6 +2,10 @@
 
 本技能 fork 自 oil-ui 0.33.2(MIT,致谢 oil-oil),此后独立演进。
 
+## 1.0.27(2026-11-09)
+
+- R50 references/self-evolution.md:训练循环方法论(弱点池机制/归因三类修法/纪律/停止条件);R49 SKILL 正文自审钩子完整
+
 ## 1.0.26(2026-11-09)
 
 - R48 scripts/publish.mjs:训练→docs 一键同步+favicon 注入;R47 docs/cockpit 46 行大分叉修复(线上演示停在 R11 时代)
