@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='8' fill='%237fd47f'/%3E%3Crect y='8' width='16' height='8' fill='%2396694a'/%3E%3Crect x='2' y='10' width='4' height='4' fill='%237a5638'/%3E%3Crect x='10' y='10' width='4' height='4' fill='%237a5638'/%3E%3C/svg%3E">
 <title>MC 服务器驾驶舱 · cockpit-demo</title>
 <style>
   /* ============================================================
@@ -24,7 +25,15 @@
   /* ===== 顶部条: 面板外凸边(基线: 上左亮下右暗) ===== */
   .bar { background:var(--panel); border:9px solid;
          border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
-         padding:12px clamp(12px,2vw,24px); display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+         padding:0 clamp(12px,2vw,24px); display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .bar .hero { display:flex; align-items:baseline; gap:12px; }
+  .bar .hero .num { font-size:clamp(28px,4vw,40px); font-weight:700; line-height:1; }
+  .bar .hero .cap { color:#6b6b6b; }
+  .nav { display:flex; margin-left:auto; }
+  .nav a { padding:15px 18px 12px; color:var(--ink); text-decoration:none; font-size:14px;
+           border-bottom:3px solid transparent; }
+  .nav a:hover { color:#1190FF; }
+  .nav a[aria-current=page] { color:#0a5bb5; border-bottom-color:#1190FF; }
   .hero { display:flex; align-items:baseline; gap:12px; }
   .hero .num { font-size:clamp(28px,4vw,40px); font-weight:700; line-height:1; }
   .hero .cap { color:#6b6b6b; }
@@ -38,7 +47,7 @@
   .kpi.err { border-color:var(--err) var(--in-l) var(--in-l) var(--err); }
 
   /* ===== 主区: 左 62% / 右 38%, 相对宽度 ===== */
-  .grid { display:grid; grid-template-columns:62fr 38fr; gap:clamp(10px,1.5vw,18px); margin-top:14px; }
+  .grid { display:grid; grid-template-columns:62fr 38fr; gap:clamp(9px,1.5vw,18px); margin-top:15px; }
   @media (max-width: 900px) { .grid { grid-template-columns:1fr; } }
   .panel { background:var(--panel); border:9px solid;
            border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
@@ -52,12 +61,17 @@
            border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
            padding:6px; }
   .chart i { flex:1; background:var(--ok); min-height:3px; }
-  .chart i.hot { background:#f4d03f; }
-  .chart i.dead { background:var(--err); }
+  .chart i.hot { background:#f4d03f; border-top:6px solid #030303; }  /* 色盲第二通道: 顶帽 */
+  .chart i.dead { background:var(--err); border-top:6px double var(--err); }
   .axis { display:flex; justify-content:space-between; font-size:12px; color:#565656; margin-top:6px; }
 
   /* 玩家表: 槽位行(内凹), 头像 27px=9GUI 槽感 */
-  .players { margin-top:14px; }
+  @media (max-width: 640px) {
+    .prow { flex-wrap: wrap; }
+    .prow .dim { flex-basis: 100%; order: 9; }
+    .hp { min-width: 0; flex: 1; }
+  }
+  .players { margin-top:15px; }
   .players .empty { background:var(--slot); border:3px solid;
           border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
           padding:21px 12px; text-align:center; color:#373737; font-size:13px; }
@@ -76,7 +90,7 @@
   /* 控制台日志: 黑底终端, ERROR 淡红底 */
   .log { background:#000; border:3px solid var(--in-d); height:100%;
          display:flex; flex-direction:column; }
-  .log .lines { flex:1; overflow:hidden; padding:9px; font-size:12.5px; line-height:1.9;
+  .log .lines { flex:1; overflow:hidden; padding:9px; font-size:12px; line-height:1.9;
                 font-family:Consolas,"Courier New",monospace; color:var(--txt-d); }
   .log .lines p { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .log .lines .w { color:#f4d03f; } .log .lines .e { color:#ff9b8a; background:var(--err-bg); }
@@ -90,13 +104,15 @@
   .log .in .send:hover { background:linear-gradient(#a6a6a6,#999999 40%,#7d7d7d); color:var(--warn); }
 
   /* 操作条: widgets 200×20 复刻(600×60 CSS 内边距适配为 180×30 按钮=60×10GUI) */
-  .actions { margin-top:14px; background:var(--panel); border:9px solid;
+  .actions { margin-top:15px; background:var(--panel); border:9px solid;
              border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
              padding:12px clamp(12px,2vw,24px); display:flex; gap:15px; flex-wrap:wrap; }
   .vbtn { min-width:180px; height:36px; display:flex; align-items:center; justify-content:center;
           background:linear-gradient(#6b6b6b,#707070 40%,#565656);
           border:3px solid #030303; box-shadow:inset 0 3px 0 #aaaaaa;
-          color:var(--txt-d); font-size:14px; cursor:pointer; user-select:none; }
+          color:var(--txt-d); font-size:14px; cursor:pointer; user-select:none;
+          font-family:inherit; }
+  .vbtn:focus-visible { outline:3px solid #fff; outline-offset:2px; }
   .vbtn:hover { background:linear-gradient(#bec7ff,#808ac1 40%,#5c669d); color:var(--warn); }
   .vbtn:active { box-shadow:inset 0 -3px 0 #aaaaaa; }
   footer { margin-top:12px; color:#7a7a7a; font-size:12px; text-align:center; }
@@ -108,6 +124,11 @@
   <div class="hero"><span class="num mono">8<span style="font-size:18px;color:#6b6b6b;">/20</span></span>
     <span class="cap">在线玩家 · 模组服 survival</span></div>
   <div class="spacer"></div>
+  <nav class="nav">
+    <a href="#" aria-current="page">驾驶舱</a>
+    <a href="../training/r2-viz/economy.html">经济周报</a>
+    <a href="../training/r3-nav/players.html">排行榜</a>
+  </nav>
   <div class="kpi"><div class="v mono">19.8</div><div class="k">TPS</div></div>
   <div class="kpi warn"><div class="v mono">62%</div><div class="k">内存</div></div>
   <div class="kpi"><div class="v mono">45ms</div><div class="k">均延迟</div></div>
@@ -115,7 +136,7 @@
 </div>
 
 <div class="grid">
-  <div style="display:flex;flex-direction:column;gap:14px;min-width:0;">
+  <div style="display:flex;flex-direction:column;gap:15px;min-width:0;">
     <div class="panel">
       <h2>在线趋势 · 近 2 小时</h2>
       <div class="chart">
@@ -166,10 +187,10 @@
 </div>
 
 <div class="actions">
-  <div class="vbtn">全服公告</div>
-  <div class="vbtn">传送管理</div>
-  <div class="vbtn">白名单</div>
-  <div class="vbtn">立即备份</div>
+  <button type="button" class="vbtn">全服公告</button>
+  <button type="button" class="vbtn">传送管理</button>
+  <button type="button" class="vbtn">白名单</button>
+  <button type="button" class="vbtn">立即备份</button>
 </div>
 
 <footer>演示数据快照 · 非实时 · 接入 rcon/bridge 后为实时值 · carliber-ui cockpit-demo</footer>
