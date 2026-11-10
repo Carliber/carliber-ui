@@ -770,6 +770,8 @@ function lintPage() {
     transitionAll: "transition: all（应列具体属性，避免连布局属性一起过渡）",
     animatesGeometry: "过渡了 width/height/top/left 等几何属性（应过渡 transform）",
     motionNoFallback: "页面有动画/过渡，但没有 prefers-reduced-motion 回退",
+    halfStepFont: "半档字号（阶梯外的小数 px，如 12.5/13.5；按角色归到整数档）",
+    gridSpacing: "间距不在 3px 网格上（页面声明了 design-grid=3，间距应取 3 的倍数）",
   };
   const found = new Map();
   const describe = (el) => {
@@ -895,6 +897,32 @@ function lintPage() {
     if (r.height < lh * 1.8) continue;
     if (size < 11) add("smallText", el, size + "px");
     if (lh / size < (zh ? 1.4 : 1.3)) add("tightLeading", el, (lh / size).toFixed(2));
+  }
+
+  // 半档字号：显式写出的 12.5/13.5 类小数 px 档，按角色归整数档
+  for (const el of texts) {
+    const size = parseFloat(css(el).fontSize);
+    if (size >= 11 && size <= 24 && Math.abs(size - Math.round(size)) > 0.01) add("halfStepFont", el, size + "px");
+  }
+
+  // 间距网格：页面声明 <meta name="design-grid" content="3"> 时，padding/margin/gap 的 px 值应取 3 的倍数
+  const gridStep = parseFloat(document.querySelector('meta[name="design-grid"]')?.content || "0");
+  if (gridStep > 0) {
+    const props = ["paddingTop", "paddingRight", "paddingBottom", "paddingLeft", "marginTop", "marginRight", "marginBottom", "marginLeft"];
+    const seen = new Set();
+    for (const el of all) {
+      const s = css(el);
+      for (const p of [...props, "gap"]) {
+        const raw = p === "gap" ? s.gap : s[p];
+        for (const part of String(raw).split(/\s+/)) {
+          if (!part.endsWith("px")) continue;
+          const v = parseFloat(part);
+          if (!(v > 4) || Math.abs(v - Math.round(v / gridStep) * gridStep) < 0.01 || seen.has(v)) continue;
+          seen.add(v);
+          add("gridSpacing", el, p + "=" + v + "px（不在 " + gridStep + "px 网格）");
+        }
+      }
+    }
   }
 
   // 首屏里停在透明的内容：出场动画没触发时截图会缺一块
