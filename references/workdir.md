@@ -47,7 +47,7 @@
 
 工具选项见 [工具](tools.md)。中间原图可以留在工作区,但最终 HTML 及其依赖只能引用项目正式位置里的文件。
 
-键盘可达性走查:对含交互控件的页面,运行 `node <skill>/scripts/tabwalk.mjs <页面地址> ...` 连续 Tab 并报告焦点序列、无焦点指示元素与 Tab 顺序断裂;input/textarea 以边框变化作焦点指示的工具报 no-outline 时人工确认即可。
+键盘可达性走查:对含交互控件的页面,运行 `node <skill>/scripts/tabwalk.mjs <页面地址> ...` 连续 Tab 并报告焦点序列、无焦点指示元素与 Tab 顺序断裂;input/textarea 以边框变化作焦点指示的工具报 no-outline 时人工确认即可。依赖:本机 Chrome/Chromium/Edge(findChrome 自动找,或 CHROME_PATH 指定)+ playwright(已装则 PLAYWRIGHT_PATH 指到其 index.mjs,或 npm i -D playwright);支持相对/绝对页面路径。
 
 ## 存量项目续作
 

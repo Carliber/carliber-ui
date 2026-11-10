@@ -1,11 +1,16 @@
-import { chromium } from '/Users/tongxl/.npm/_npx/9833c18b2d85bc59/node_modules/playwright/index.mjs';
-const EXE = '/Users/tongxl/Library/Caches/ms-playwright/chromium-1248/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
+import { findChrome } from './chrome.mjs';
 const pages = process.argv.slice(2);
+const EXE = findChrome();
+const { chromium } = await import(process.env.PLAYWRIGHT_PATH || 'playwright').catch(() => {
+  console.error('tabwalk 需要 playwright:已装则用环境变量 PLAYWRIGHT_PATH 指到其 index.mjs,或 npm i -D playwright');
+  process.exit(1);
+});
 const browser = await chromium.launch({ executablePath: EXE });
+const { resolve } = await import('node:path');
 
 for (const f of pages) {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
-  await page.goto('file://' + f, { waitUntil: 'networkidle' });
+  await page.goto('file://' + resolve(f), { waitUntil: 'networkidle' });
   const seq = [];
   let prev = null, stuck = 0;
   for (let i = 0; i < 40; i++) {

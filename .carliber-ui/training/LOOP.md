@@ -21,6 +21,20 @@
 
 ## 循环日志(按轮次)
 
+### R34 · 可移植性审计 ✅
+
+- 全仓绝对路径扫描:仅 tabwalk.mjs 写死(2 处)→ findChrome()+PLAYWRIGHT_PATH 环境变量+resolve 相对路径(顺带修复相对路径拼 file:// 的原 bug)
+- 复验 cockpit Tab 流输出与 R10 一致;workdir.md 补依赖说明
+
+### R33 · 主页全链接验证 ✅
+
+- showcase/锚点 #baseline/GitHub(代理 HTTP 200)全绿;锚点✘系自写检查脚本分支 bug(file:// 带 hash 整串当路径)自纠
+
+### R32 · showcase 第三档案+账本纪律 ✅
+
+- states 总览入库 docs/states/(Pages 可达)——拷贝后导航相对路径全错(R23 教训立刻复现)→ 改 docs 相对导航+三跳点击验证通过
+- LOOP 账本纪律:超 300 行归档机制(当前 154 行未触发)
+
 ### R31 · 状态机总览页 ✅(v1.0.21)
 
 - 五态并置规格页(loading/normal/empty/offline/extreme)+极端值语义边框展示;lint 1 类=断线降透明演示语义豁免(与 R11 同理)

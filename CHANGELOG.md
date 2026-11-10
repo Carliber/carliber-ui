@@ -2,6 +2,17 @@
 
 本技能 fork 自 oil-ui 0.33.2(MIT,致谢 oil-oil),此后独立演进。
 
+## 1.0.22(2026-11-09)
+
+- tabwalk.mjs 可移植化:findChrome/CHROME_PATH + PLAYWRIGHT_PATH + 相对路径 resolve(修原 file:// 拼 bug)
+- workdir.md 补 tabwalk 依赖说明;主页全链接验证全绿
+
+## 1.0.22(2026-11-09)
+
+- R34 tabwalk.mjs 可移植化:findChrome/CHROME_PATH + PLAYWRIGHT_PATH + 相对路径 resolve(修原 file:// 拼 bug);workdir.md 补依赖说明
+- R33 主页全链接验证全绿(含 GitHub 代理 200)
+- R32 states 总览入库 docs/states/ + 账本归档纪律
+
 ## 1.0.21(2026-11-09)
 
 - R31 状态机总览页:五态并置规格(loading/normal/empty/offline/extreme)+极端值语义边框展示
