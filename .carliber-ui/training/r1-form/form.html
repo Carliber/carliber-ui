@@ -180,9 +180,9 @@ $('seg').addEventListener('click', e => {
 });
 $('rule').addEventListener('change', () => { touched.rule = true; refresh(); });
 $('msg').addEventListener('input', e => {
+  if (e.target.value.length > 140) e.target.value = e.target.value.slice(0, 140); // 先截断
   const n = e.target.value.length;
   const c = $('count'); c.textContent = n + ' / 140'; c.classList.toggle('over', n > 140);
-  e.target.value = n > 140 ? e.target.value.slice(0, 140) : e.target.value;
 });
 // 提交中 → 成功
 form.addEventListener('submit', e => {
