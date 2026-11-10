@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC 服务器驾驶舱 · cockpit-demo</title>
+<style>
+  /* ============================================================
+     MC 原版材质工具化 · 基线: assets/design-md/minecraft/DESIGN.md
+     控件级: 1 GUI px = 3 CSS px 绝对像素(基线例外条款, px 允许)
+     布局级: 相对单位优先(clamp/vw/%), 常见档位间无断裂
+     演示数据: 模拟快照, 非实时(需求书已标注)
+     ============================================================ */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --panel:#c6c6c6; --slot:#8b8b8b; --out-l:#ffffff; --out-d:#555555;
+    --in-d:#373737; --in-l:#ffffff; --ink:#404040; --txt-d:#e0e0e0;
+    --ok:#7fd47f; --warn:#b8860b; --err:#c64545; --err-bg:rgba(198,69,69,.14);
+  }
+  body { background:#1a1a1a; font:14px/1.6 "PingFang SC","Microsoft YaHei",sans-serif;
+         color:var(--ink); padding:clamp(12px,2vw,24px); }
+  .mono { font-family:Consolas,"Courier New",monospace; }
+
+  /* ===== 顶部条: 面板外凸边(基线: 上左亮下右暗) ===== */
+  .bar { background:var(--panel); border:9px solid;
+         border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
+         padding:0 clamp(12px,2vw,24px); display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .bar .hero { display:flex; align-items:baseline; gap:12px; }
+  .bar .hero .num { font-size:clamp(28px,4vw,40px); font-weight:700; line-height:1; }
+  .bar .hero .cap { color:#6b6b6b; }
+  .nav { display:flex; margin-left:auto; }
+  .nav a { padding:16px 18px 13px; color:var(--ink); text-decoration:none; font-size:14px;
+           border-bottom:3px solid transparent; }
+  .nav a:hover { color:#1190FF; }
+  .nav a[aria-current=page] { color:#0a5bb5; border-bottom-color:#1190FF; }
+  .hero { display:flex; align-items:baseline; gap:12px; }
+  .hero .num { font-size:clamp(28px,4vw,40px); font-weight:700; line-height:1; }
+  .hero .cap { color:#6b6b6b; }
+  .spacer { flex:1; }
+  .kpi { background:var(--slot); border:3px solid;
+         border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
+         padding:6px 15px; min-width:96px; text-align:center; }
+  .kpi .v { font-size:21px; font-weight:700; color:var(--ink); }
+  .kpi .k { font-size:12px; color:#373737; }
+  .kpi.warn { border-color:#b8860b var(--in-l) var(--in-l) #b8860b; }
+  .kpi.err { border-color:var(--err) var(--in-l) var(--in-l) var(--err); }
+
+  /* ===== 主区: 左 62% / 右 38%, 相对宽度 ===== */
+  .grid { display:grid; grid-template-columns:62fr 38fr; gap:clamp(10px,1.5vw,18px); margin-top:14px; }
+  @media (max-width: 900px) { .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--panel); border:9px solid;
+           border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
+           padding:12px; }
+  .panel h2 { font-size:15px; margin-bottom:9px; color:var(--ink); }
+  .panel h2::before { content:"| "; color:#1190FF; font-weight:700; }
+
+  /* 趋势直方图: 28 柱, 高度=在线人数, 语义色 */
+  .chart { display:flex; align-items:flex-end; gap:3px; height:120px;
+           background:var(--slot); border:3px solid;
+           border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
+           padding:6px; }
+  .chart i { flex:1; background:var(--ok); min-height:3px; }
+  .chart i.hot { background:#f4d03f; }
+  .chart i.dead { background:var(--err); }
+  .axis { display:flex; justify-content:space-between; font-size:12px; color:#565656; margin-top:6px; }
+
+  /* 玩家表: 槽位行(内凹), 头像 27px=9GUI 槽感 */
+  @media (max-width: 640px) {
+    .prow { flex-wrap: wrap; }
+    .prow .dim { flex-basis: 100%; order: 9; }
+    .hp { min-width: 0; flex: 1; }
+  }
+  .players { margin-top:14px; }
+  .players .empty { background:var(--slot); border:3px solid;
+          border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
+          padding:21px 12px; text-align:center; color:#373737; font-size:13px; }
+  .prow { display:flex; align-items:center; gap:12px; background:var(--slot);
+          border:3px solid; border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
+          padding:6px 12px; margin-bottom:6px; }
+  .face { width:27px; height:27px; background:#8b6d4b; border:3px solid var(--in-d); flex:none;
+          image-rendering:pixelated; }
+  .prow .name { font-weight:700; min-width:88px; }
+  .prow .dim { color:#373737; }
+  .hp { flex:1; min-width:90px; height:15px; background:#4a4a4a;
+        border:3px solid; border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d); position:relative; }
+  .hp i { position:absolute; left:0; top:0; bottom:0; background:#c64545; }
+  .hp.half i { width:52%; } .hp.full i { width:96%; } .hp.low i { width:22%; }
+
+  /* 控制台日志: 黑底终端, ERROR 淡红底 */
+  .log { background:#000; border:3px solid var(--in-d); height:100%;
+         display:flex; flex-direction:column; }
+  .log .lines { flex:1; overflow:hidden; padding:9px; font-size:12.5px; line-height:1.9;
+                font-family:Consolas,"Courier New",monospace; color:var(--txt-d); }
+  .log .lines p { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .log .lines .w { color:#f4d03f; } .log .lines .e { color:#ff9b8a; background:var(--err-bg); }
+  .log .lines .t { color:#7a7a7a; }
+  .log .in { display:flex; border-top:3px solid var(--in-d); }
+  .log .in input { flex:1; background:#000; border:none; outline:none; color:var(--txt-d);
+                   font:inherit; padding:9px 12px; }
+  .log .in .send { background:linear-gradient(#6b6b6b,#707070 40%,#565656);
+                   border-left:3px solid var(--in-d); color:var(--txt-d); padding:9px 15px;
+                   cursor:pointer; }
+  .log .in .send:hover { background:linear-gradient(#a6a6a6,#999999 40%,#7d7d7d); color:var(--warn); }
+
+  /* 操作条: widgets 200×20 复刻(600×60 CSS 内边距适配为 180×30 按钮=60×10GUI) */
+  .actions { margin-top:14px; background:var(--panel); border:9px solid;
+             border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
+             padding:12px clamp(12px,2vw,24px); display:flex; gap:15px; flex-wrap:wrap; }
+  .vbtn { min-width:180px; height:36px; display:flex; align-items:center; justify-content:center;
+          background:linear-gradient(#6b6b6b,#707070 40%,#565656);
+          border:3px solid #030303; box-shadow:inset 0 3px 0 #aaaaaa;
+          color:var(--txt-d); font-size:14px; cursor:pointer; user-select:none;
+          font-family:inherit; }
+  .vbtn:focus-visible { outline:3px solid #fff; outline-offset:2px; }
+  .vbtn:hover { background:linear-gradient(#bec7ff,#808ac1 40%,#5c669d); color:var(--warn); }
+  .vbtn:active { box-shadow:inset 0 -3px 0 #aaaaaa; }
+  footer { margin-top:12px; color:#7a7a7a; font-size:12px; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="hero"><span class="num mono">0<span style="font-size:18px;color:#6b6b6b;">/20</span></span>
+    <span class="cap">在线玩家 · 模组服 survival · 极端数据压力测试</span></div>
+  <div class="spacer"></div>
+  <nav class="nav">
+    <a href="#" aria-current="page">驾驶舱</a>
+    <a href="../../r2-viz/economy.html">经济周报</a>
+    <a href="../r3-nav/players.html">排行榜</a>
+  </nav>
+  <div class="kpi err"><div class="v mono">0.0</div><div class="k">TPS</div></div>
+  <div class="kpi err"><div class="v mono">99999999%</div><div class="k">内存</div></div>
+  <div class="kpi err"><div class="v mono">9999ms</div><div class="k">均延迟</div></div>
+  <div class="kpi err"><div class="v mono">9999</div><div class="k">ERROR/10min</div></div>
+</div>
+
+<div class="grid">
+  <div style="display:flex;flex-direction:column;gap:14px;min-width:0;">
+    <div class="panel">
+      <h2>在线趋势 · 近 2 小时</h2>
+      <div class="chart">
+        <i style="height:30%"></i><i style="height:35%"></i><i style="height:42%"></i><i style="height:38%"></i>
+        <i style="height:50%"></i><i style="height:48%"></i><i style="height:55%"></i><i style="height:60%"></i>
+        <i style="height:52%"></i><i style="height:58%"></i><i class="hot" style="height:78%"></i><i style="height:65%"></i>
+        <i style="height:57%"></i><i style="height:62%"></i><i style="height:70%"></i><i style="height:66%"></i>
+        <i style="height:60%"></i><i style="height:68%"></i><i class="hot" style="height:82%"></i><i style="height:74%"></i>
+        <i style="height:66%"></i><i style="height:72%"></i><i style="height:78%"></i><i style="height:70%"></i>
+        <i style="height:64%"></i><i style="height:58%"></i><i style="height:62%"></i><i class="dead" style="height:18%"></i>
+      </div>
+      <div class="axis mono"><span>-2h</span><span>-1h</span><span>-30min</span><span>现在</span></div>
+    </div>
+    <div class="panel players">
+      <h2>在线玩家 · 0(空态演示)</h2>
+      <div class="empty" style="background:var(--slot); border:3px solid; border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d); padding:21px 12px; text-align:center; color:#373737;">服务器空闲中,猫在后台睡觉 · 上次满员 3 小时前</div>
+    </div>
+  </div>
+  <div class="panel" style="display:flex;flex-direction:column;">
+    <h2>控制台</h2>
+    <div class="log">
+      <div class="lines">
+        <p><span class="t">14:02:11</span> [INFO] tongxl joined the game</p>
+        <p><span class="t">14:02:44</span> [INFO] miner_2026 completed the challenge [.Utils.钻头升舱.]</p>
+        <p><span class="t">14:03:07</span> <span class="w">[WARN] Can't keep up! Did the system change time?</span></p>
+        <p><span class="t">14:04:19</span> [INFO] ender_P issued /server command</p>
+        <p><span class="t">14:05:02</span> <span class="e">[ERROR] Thaumcraft: AuraNode null at dim 1, x-1024</span></p>
+        <p><span class="t">14:05:03</span> <span class="e">[ERROR] TileEntity loss detected in chunk (12,-38)</span></p>
+        <p><span class="t">14:06:31</span> [INFO] Steve_CN slain by Wither Skeleton</p>
+        <p><span class="t">14:07:15</span> [INFO] builder_li joined the game</p>
+        <p><span class="t">14:08:40</span> [INFO] Autosave completed (4.2s)</p>
+        <p><span class="t">14:09:58</span> <span class="w">[WARN] entity ticking high load: ender_P</span></p>
+        <p><span class="t">14:11:20</span> [INFO] redstone_k issued /home command</p>
+        <p><span class="t">14:12:37</span> [INFO] Alex_MM has made the advancement [末地折跃]</p>
+        <p><span class="t">14:13:09</span> [INFO] farmer_wang harvested 64 wheat</p>
+        <p><span class="t">14:14:51</span> <span class="e">[ERROR] RCON auth failed from 10.3.0.2</span></p>
+      </div>
+      <div class="in"><input placeholder="输入 server 命令或公告…" readonly><span class="send">发送</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="actions">
+  <button type="button" class="vbtn">全服公告</button>
+  <button type="button" class="vbtn">传送管理</button>
+  <button type="button" class="vbtn">白名单</button>
+  <button type="button" class="vbtn">立即备份</button>
+</div>
+
+<footer>演示数据快照 · 非实时 · 接入 rcon/bridge 后为实时值 · carliber-ui cockpit-demo</footer>
+
+</body>
+</html>
