@@ -96,7 +96,7 @@ overflow: "renderScaledText(GL 横向缩放)兜底,不换行不省略"
 
 | 层 | 1.7.10 | 1.12.2 | 1.20.1 |
 | --- | --- | --- | --- |
-| GUI 贴图 | widgets/icons/container 全 256×256 | 同左(文件名/组织一致) | 同左(新增 bundle/cartography 等新容器贴图;advancements 拆子目录;尚未 sprites 化) |
+| GUI 贴图 | widgets/icons/container 全 256×256 | 同左(文件名/组织一致) | 同主结构 + **控件贴图独立化**:新增 checkbox.png 64²、slider.png、tab_button.png、bars.png、header/footer_separator.png 32×2(R17 实物解包);新增 bundle/cartography 等新容器贴图;advancements 拆子目录;尚未 sprites 目录化 |
 | 字体 | textures/font/ascii.png 位图 + unicode_page_* | 同左 | ascii.png 仍在,**新增 font/default.json**(JSON provider 链:default→ascii + unifont) |
 | 绘制 API | drawTexturedModalRect + 裸 GL11 + Tessellator | 同名 API + GlStateManager(近亲,写法几乎照搬) | GuiGraphics.blit + RenderSystem/shader(断代:无 immediate GL) |
 | 事件 | mouseClicked(III)V 等 | 基本同 1.7 | 签名带 double 坐标/modifiers,render(GuiGraphics,…),initGui→addRenderableWidget |
