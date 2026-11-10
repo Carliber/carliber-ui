@@ -29,7 +29,7 @@
   .bar .hero .num { font-size:clamp(28px,4vw,40px); font-weight:700; line-height:1; }
   .bar .hero .cap { color:#6b6b6b; }
   .nav { display:flex; margin-left:auto; }
-  .nav a { padding:16px 18px 13px; color:var(--ink); text-decoration:none; font-size:14px;
+  .nav a { padding:15px 18px 12px; color:var(--ink); text-decoration:none; font-size:14px;
            border-bottom:3px solid transparent; }
   .nav a:hover { color:#1190FF; }
   .nav a[aria-current=page] { color:#0a5bb5; border-bottom-color:#1190FF; }
@@ -46,7 +46,7 @@
   .kpi.err { border-color:var(--err) var(--in-l) var(--in-l) var(--err); }
 
   /* ===== 主区: 左 62% / 右 38%, 相对宽度 ===== */
-  .grid { display:grid; grid-template-columns:62fr 38fr; gap:clamp(10px,1.5vw,18px); margin-top:14px; }
+  .grid { display:grid; grid-template-columns:62fr 38fr; gap:clamp(9px,1.5vw,18px); margin-top:15px; }
   @media (max-width: 900px) { .grid { grid-template-columns:1fr; } }
   .panel { background:var(--panel); border:9px solid;
            border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
@@ -70,7 +70,7 @@
     .prow .dim { flex-basis: 100%; order: 9; }
     .hp { min-width: 0; flex: 1; }
   }
-  .players { margin-top:14px; }
+  .players { margin-top:15px; }
   .players .empty { background:var(--slot); border:3px solid;
           border-color:var(--in-d) var(--in-l) var(--in-l) var(--in-d);
           padding:21px 12px; text-align:center; color:#373737; font-size:13px; }
@@ -103,7 +103,7 @@
   .log .in .send:hover { background:linear-gradient(#a6a6a6,#999999 40%,#7d7d7d); color:var(--warn); }
 
   /* 操作条: widgets 200×20 复刻(600×60 CSS 内边距适配为 180×30 按钮=60×10GUI) */
-  .actions { margin-top:14px; background:var(--panel); border:9px solid;
+  .actions { margin-top:15px; background:var(--panel); border:9px solid;
              border-color:var(--out-l) var(--out-d) var(--out-d) var(--out-l);
              padding:12px clamp(12px,2vw,24px); display:flex; gap:15px; flex-wrap:wrap; }
   .vbtn { min-width:180px; height:36px; display:flex; align-items:center; justify-content:center;
@@ -135,7 +135,7 @@
 </div>
 
 <div class="grid">
-  <div style="display:flex;flex-direction:column;gap:14px;min-width:0;">
+  <div style="display:flex;flex-direction:column;gap:15px;min-width:0;">
     <div class="panel">
       <h2>在线趋势 · 近 2 小时</h2>
       <div class="chart">
