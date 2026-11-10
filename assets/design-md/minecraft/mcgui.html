@@ -97,14 +97,14 @@
              background:var(--panel-bg);
              border:3px solid; border-color:var(--out-light) var(--out-dark) var(--out-dark) var(--out-light); }
 
-  /* ===== 6. HUD 示意(标注:HUD 数值未源码实证,按 18 槽节奏推导,复刻前以 widgets.png 校准) ===== */
+  /* ===== 6. HUD 示意(icons.png 已解包实证:精灵行带 v0 心/v9 甲/v18 泡/v27 饥饿, 经验条 (0,64) 182×5; 屏幕布局间距仍按槽节奏推导) ===== */
   .hud { position:relative; width:546px; height:180px; }
   .hudhot { position:absolute; left:0; bottom:0; display:grid; grid-template-columns:repeat(9,54px);
             background:rgba(0,0,0,.35); border:3px solid #1a1a1a; }
   .hudhot .cell { border:none; background:rgba(139,139,139,.55); }
   .hudhot .sel::after { content:""; position:absolute; inset:-6px;      /* 选中格白框示意 */
             border:6px solid #fff; z-index:2; }
-  .xpbar { position:absolute; left:6px; bottom:66px; width:534px; height:18px;
+  .xpbar { position:absolute; left:0px; bottom:66px; width:546px; height:15px;
            background:#000; border:3px solid #1a1a1a; }
   .xpbar .fill { height:100%; width:64%; background:#80ff20; }
   .xptext { position:absolute; left:0; width:546px; bottom:60px; text-align:center;
@@ -176,7 +176,7 @@
 </section>
 
 <section>
-  <div class="spec"><b>⑤ HUD 示意</b> — ⚠ 以下数值按 18 槽节奏推导,未源码实证;复刻前以 widgets.png 实测校准</div>
+  <div class="spec"><b>⑤ HUD 示意</b> — icons.png(1.7.10 client.jar 解包)实证:心/甲/饥饿/氧气泡为 9×9 GUI 精灵,行带 v0/v9/v18/v27;经验条 (0,64) 宽 182 GUI(=hotbar 同宽)。屏幕布局间距仍为推导,进游戏前以 GuiIngame.java 校准</div>
   <div class="demo">
     <div class="hud">
       <div class="hearts">
@@ -193,7 +193,7 @@
       </div>
     </div>
   </div>
-  <div class="hudnote">HUD(心/经验条/hotbar 外框)的像素规格未在 mc1710 技能实证,HTML 数值为槽节奏推导;进游戏前用 GuiIngame.java + widgets.png 校准。</div>
+  <div class="hudnote">HUD 实证状态:精灵 UV 与尺寸已实证(icons.png 像素扫描,2026-11-10);屏幕定位间距(心步进/经验条基线偏移)未实证,进游戏前用 GuiIngame.java 校准。</div>
 </section>
 
 </body>

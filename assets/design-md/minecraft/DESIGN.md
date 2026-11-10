@@ -159,6 +159,6 @@ tabs-active:      "文字 #0a5bb5 + 3px 底条 #1190FF"   # 双通道: 文字可
 
 - `~/.agents/skills/mc1710/SKILL.md` §二(GUI 绘制机制,全部源码实证)
 - 个人 1.7.10 Mod 项目原型(本地)— 原型 v27,用户拍板的 1:3 换算体系
-- 本目录 `mcgui.html` — 原版 GUI 组件 HTML 复刻(按钮/槽位/hotbar/tooltip/HUD/进度条)
+- 本目录 `mcgui.html` — 原版 GUI 组件 HTML 复刻(按钮/槽位/hotbar/tooltip/HUD/进度条);HUD 精灵 UV/行带已实证(icons.png 像素扫描:v0 心/v9 甲/v18 泡/v27 饥饿,经验条 (0,64) 182×5),屏幕布局间距仍为推导
 - 本目录 [translate.md](translate.md) — HTML 原型→Java GUI 翻译方法(对照表+映射规则,模型照此自行翻译);另附 [translate-1.12.md](translate-1.12.md) 与 [translate-1.20.md](translate-1.20.md) 版本增量
 - 版本差异(1.7.10/1.12.2/1.20.1 官方 client.jar 解包实证:GUI 贴图三版本同规格 256×256;字体 1.20 起 JSON provider 化)见上方「版本差异」节
