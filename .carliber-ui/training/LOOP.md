@@ -59,6 +59,11 @@
 - 修复:div/span → 原生 button + focus-visible;工具收编 scripts/tabwalk.mjs(tools/workdir 提及)
 - 归因:第 4 维判定无走查动作 → 已动作化(tabwalk 入规)
 
+### R18 · 漂移源消除(针对 W9 复发)✅
+
+- 主页徽章再次落后(1.0.13 vs 1.0.14)——证明手工同步三处必漏,机制选消除:主页 kicker 去版本号(改「开源 · MIT」常青文案),版本唯一源 = SKILL.md + CHANGELOG
+- og:image 改绝对 URL(社交爬虫要求)
+
 ### R17 · 1.20.1 新控件贴图实证(W2/W7 延伸)✅
 
 - 重新下载 1.20.1 client.jar 解包:确认 1.20.1 仍未 sprites 化;新增控件贴图 checkbox 64²/slider/tab_button/bars/分隔线 32×2 → 基线版本差异节已更新
